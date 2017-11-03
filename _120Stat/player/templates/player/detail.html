@@ -1,0 +1,10 @@
+<img src = " {{ player.team_logo }}">
+
+<h1>{{player.firstname}} {{ player.lastname }}</h1>
+<h2>{{ player.team }}</h2>
+
+<ul>
+	{% for year in player.yearstats_set.all %}
+	<li> {{ year.year }} - {{ year.passingyards }} </li>
+	{% endfor %}
+</ul>

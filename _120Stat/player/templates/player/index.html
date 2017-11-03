@@ -1,0 +1,10 @@
+{% if all_players %}
+	<h3>Here are all my players</h3>
+	<ul>
+		{% for player in all_players %}
+		<li><a href = "{% url 'detail' player.id %}"> {{ player.lastname }} </a></li>
+		{% endfor %}
+	</ul>
+{% else %}
+	<h3>No players added</h3>
+{% endif %}

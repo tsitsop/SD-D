@@ -12,5 +12,9 @@ class Player(models.Model):
 
 class YearStats(models.Model):
 	player = models.ForeignKey(Player, on_delete=models.CASCADE)
+	year = models.IntegerField(default = 0)
 	passingyards = models.IntegerField()
 	rushingyards = models.IntegerField()
+
+	def __str__(self):
+		return str(self.player) + ' ' + str(self.year)
