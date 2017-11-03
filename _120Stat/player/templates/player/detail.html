@@ -3,8 +3,21 @@
 <h1>{{player.firstname}} {{ player.lastname }}</h1>
 <h2>{{ player.team }}</h2>
 
-<ul>
+{% if error_message %}
+	<p><strong>{{error_message}}</strong></p>
+{% endif %}
+
+<form action = "{% url 'player:important' player.id %}" method = "post">
+	{% csrf_token %}
 	{% for year in player.yearstats_set.all %}
-	<li> {{ year.year }} - {{ year.passingyards }} </li>
+		<input type = "radio" id = "yearstats{{forloop.counter}}" name = "yearstat" value = "{{ year.year }}" />
+		<label> "yearstats{{forloop.counter}}"
+			{{ yearstats.year }}
+			{% if year.is_important %}
+				<img src = "https://vignette.wikia.nocookie.net/narutofanon/images/6/6a/Icon_green_dot.png/revision/latest?cb=20161029210441" />
+			{% endif %}
+		 </label><br>
 	{% endfor %}
-</ul>
+	<input type = "submit" value = "Important">
+
+</form>

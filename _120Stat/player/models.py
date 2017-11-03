@@ -15,6 +15,7 @@ class YearStats(models.Model):
 	year = models.IntegerField(default = 0)
 	passingyards = models.IntegerField()
 	rushingyards = models.IntegerField()
+	is_important = models.BooleanField(default = False)
 
 	def __str__(self):
 		return str(self.player) + ' ' + str(self.year)

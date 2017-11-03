@@ -2,7 +2,7 @@
 	<h3>Here are all my players</h3>
 	<ul>
 		{% for player in all_players %}
-		<li><a href = "{% url 'detail' player.id %}"> {{ player.lastname }} </a></li>
+		<li><a href = "{% url 'player:detail' player.id %}"> {{ player.lastname }} </a></li>
 		{% endfor %}
 	</ul>
 {% else %}
