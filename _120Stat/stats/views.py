@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from forms import PlayerForm
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
+from django.forms.formsets import formset_factory
 
 from _120_Player.Player import Player
 import nfldb
@@ -16,27 +17,25 @@ class ContactView(TemplateView):
 
 class HomeView(TemplateView):
     template_name = "stats/home.html"
+    PlayerFormSet = formset_factory(PlayerForm, extra=4)
+    
     def get(self, request):
-        form = PlayerForm()
-
         # will render home.html, passing in our form
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'formset': self.PlayerFormSet})
 
     # when the user hits submit, a POST request is created. The below function is called.
     def post(self, request):
-        # fills the form out witht he data received from POST request
-        form = PlayerForm(request.POST)
+        formset = self.PlayerFormSet(request.POST)
+        players = list()
 
-        if form.is_valid():
-            # makes sure no SQL injections???? also, 'player_name' is the name of the field.
-            # we defined it in forms.py
-            player_name = form.cleaned_data['player_name']
+        if formset.is_valid():
+            for form in formset:
+                players.append(form.cleaned_data['player_name'])
 
-            # if valid data, we want to render our statistics page. Need to get the player data too.
+            request.session['players'] = players
 
-            request.session['player_1'] = player_name
-            request.session['player_2'] = "Philip Rivers"
             return StatView.as_view()(request)
+            # return redirect('stats:statistics')
 
         # if data invalid, request user input again. Need to show some sort of error here too.
         return render(request, self.template_name, {'form': form})
@@ -48,21 +47,18 @@ class StatView(ListView):
 
         db = nfldb.connect()
 
-        player1_name = request.session['player_1']
-        player2_name = request.session['player_2']
+        player_names = request.session['players']
 
-        player1 = Player(player1_name,db,2015)
-        player2 = Player(player2_name,db,2015)
-
-        player1.update()
-        player2.update()
-
+        players = list()
+        for player in player_names:
+            players.append(Player(player, db, 2015))
+            
         dataDict = {}
         playerDict = {}
         dataDict['year'] = 2015
 
-        playerDict[player1_name] = player1.getData()
-        playerDict[player2_name] = player2.getData()
+        for player in players:
+            playerDict[player.name] = player.getData()
 
         dataDict['players'] = playerDict
 

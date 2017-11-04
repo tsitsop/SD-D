@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>ATTEMPT 1</title>
-	</head>
-	<body>
-		<div>
+{% extends "stats/header.html" %}
+{% block content%}
 			<form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
+				{% csrf_token %}
+				{{ formset.management_form }}
+				{% for form in formset %}
+					{{form}}
+				{% endfor %}
                 <button type="submit">Search</button>
             </form>
-		</div>
-	</body>
-</html>
+{% endblock %}
