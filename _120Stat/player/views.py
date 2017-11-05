@@ -19,7 +19,7 @@ def detail(request, player_id):
 def important(request, player_id):
 	player = get_object_or_404(Player, pk=player_id)
 	try: 
-		selected_year = player.yearstats_set.get(pk = request.POST['yearstat'])
+		selected_year = player.yearstats_set.get(pk = request.POST['year'])
 	except (KeyError, YearStats.DoesNotExist):
 		return render( request, 'player/detail.html', {
 			'player': player,
