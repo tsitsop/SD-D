@@ -17,7 +17,7 @@ class ContactView(TemplateView):
 
 class HomeView(TemplateView):
     template_name = "stats/home.html"
-    PlayerFormSet = formset_factory(PlayerForm, extra=4)
+    PlayerFormSet = formset_factory(PlayerForm, extra=2)
     
     def get(self, request):
         # will render home.html, passing in our form
