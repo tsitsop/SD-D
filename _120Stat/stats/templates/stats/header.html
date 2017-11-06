@@ -1,14 +1,23 @@
 <!DOCTYPE html>
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'stats/style.css' %}" />
+
 <html lang = "en">
 	<head>
-		<title>120 Stats</title>
+		<title>120Stat</title>
     <meta charset="utf-8"/>
 	</head>
 
 	<body>
+
+		<table>
+		    <th><h1><b>120Stat</b></h1></th>
+	    </table>
+	
 		<div>
-      {% block content %}
-      {% endblock %}
+	      {% block content %}
+	      {% endblock %}
 		</div>
 	</body>
 </html>

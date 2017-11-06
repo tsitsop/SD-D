@@ -1,8 +1,26 @@
 {% extends "stats/header.html" %}
 
 {% block content %}
+
+  <div id="players">
   {% for k,v in players.items %}
-    <p>{{k}}</p>
-    <p>{{v}}</o>
+  	<div class="player">
+
+	  	<table>
+	    <caption><b>{{k}}</b></caption>
+
+	    {% for statistic in v %}
+	    	<tr>
+	    	{% for field in statistic %}
+	    		<td>{{field}}</td>
+	    	{% endfor %}
+	    	</tr>
+	    
+	    {% endfor %}
+	    </table>
+
+    </div>
   {% endfor %}
+  </div>
+
 {% endblock %}

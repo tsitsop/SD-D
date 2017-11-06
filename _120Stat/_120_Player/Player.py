@@ -110,7 +110,7 @@ class Player:
             r.append(("Passing Interceptions",self.passing_int))
 
             r.append(("Fumbles Total",self.fumbles_tot))
-            r.append(("Fumbles lost",self.fumbles_lost))
+            r.append(("Fumbles Lost",self.fumbles_lost))
 
             r.append(("Passing Sacks",self.passing_sk))
             r.append(("Rushing Yards",self.rushing_yds))
@@ -120,27 +120,30 @@ class Player:
             r.append(("Rushing Attempts",self.rushing_att))
             r.append(("Rushing Yards",self.rushing_yds))
             r.append(("Rushing Touchdowns",self.rushing_tds))
+
             r.append(("Fumbles Total",self.fumbles_tot))
             r.append(("Fumbles Lost",self.fumbles_lost))
+
             r.append(("Recieving Targets",self.receiving_tar))
             r.append(("Recieving Receptions",self.receiving_rec))
             r.append(("Recieving Yards",self.receiving_yds))
             r.append(("Recieving Touchdowns",self.receiving_tds))
-            r.append(("Recieving Yards after catch (yac)",self.receiving_yac_yds))
+            r.append(("Recieving Yards After Catch (YAC)",self.receiving_yac_yds))
         elif self.position == types.Enums.player_pos.WR or  self.position == types.Enums.player_pos.TE:
             r.append(("Fumbles Total",self.fumbles_tot))
             r.append(("Fumbles Lost",self.fumbles_lost))
+
             r.append(("Recieving Targets",self.receiving_tar))
             r.append(("Recieving Receptions",self.receiving_rec))
             r.append(("Recieving Yards",self.receiving_yds))
             r.append(("Recieving Touchdowns",self.receiving_tds))
-            r.append(("Recieving Yards after catch (yac)",self.receiving_yac_yds))
+            r.append(("Recieving Yards After Catch (YAC)",self.receiving_yac_yds))
         elif self.position == types.Enums.player_pos.K:
             r.append(("Field Goals Attempted",self.kicking_fga))
             r.append(("Field Goals Missed",self.kicking_fgmissed))
+            r.append(("Field Goal Made Yards",self.kicking_fgm_yds))
+
             r.append(("Extra Points Attempted",self.kicking_xpa))
             r.append(("Extra Points Missed",self.kicking_xpmissed))
-
-            r.append(("Field Goal Made Yards",self.kicking_fgm_yds))
 
         return r
