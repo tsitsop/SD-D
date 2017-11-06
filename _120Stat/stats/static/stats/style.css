@@ -1,16 +1,27 @@
 body {
 	font-family: "Arial", sans-serif;
+	background-color: #393939;
+	color: azure;
+}
+h1 {
+	font-size: 36px;
 }
 table {
 	width: 100%;
+	margin: 0 auto;
 }
 caption {
 	border-bottom: 2px solid black;
 	padding-top: 4px;
 	padding-bottom: 4px;
+	font-size: 24px;
+}
+tr {
+	border: 1px solid black;
 }
 td {
-	border: 1px solid gray;
+	border-bottom: 1px solid black;
+	padding: 2px;
 }
 table tr td:nth-child(2) {
 	text-align: right;
@@ -18,7 +29,20 @@ table tr td:nth-child(2) {
 .player {
 	width: 25%; 
 	height:25%; 
+	padding: 1%;
+	margin: 1%;
 	border:1px solid black; 
-	margin-right: 5%; 
+	background-color: #1A1B63; 
 	float: left;
+/*	text-shadow: 10px;
+	box-shadow: 10px;*/
+}
+#players {
+	position: fixed;
+    /* center the element */
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+	overflow: auto;
 }
