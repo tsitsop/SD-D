@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'player.apps.PlayerConfig',
+    'stats',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
