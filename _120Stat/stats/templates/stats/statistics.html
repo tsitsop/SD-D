@@ -1,26 +1,25 @@
-{% extends "stats/header.html" %}
+{% extends "stats/header.html" %} {% block content %}
 
-{% block content %}
+<div id="players">
+	{% for k,v in players.items %}
+	<div class="player">
 
-  <div id="players">
-  {% for k,v in players.items %}
-  	<div class="player">
+		<table>
+			<caption>
+				<b>{{k}}</b>
+			</caption>
 
-	  	<table>
-	    <caption><b>{{k}}</b></caption>
+			{% for statistic in v %}
+			<tr>
+				{% for field in statistic %}
+				<td>{{field}}</td>
+				{% endfor %}
+			</tr>
 
-	    {% for statistic in v %}
-	    	<tr>
-	    	{% for field in statistic %}
-	    		<td>{{field}}</td>
-	    	{% endfor %}
-	    	</tr>
-	    
-	    {% endfor %}
-	    </table>
-
-    </div>
-  {% endfor %}
-  </div>
+			{% endfor %}
+		</table>
+	</div>
+	{% endfor %}
+</div>
 
 {% endblock %}
