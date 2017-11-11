@@ -7,7 +7,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.forms.formsets import formset_factory
 
-from _120_Player.Player import Player
+from stats.models import Player
+
 import nfldb
 
 class ContactView(TemplateView):
@@ -44,21 +45,18 @@ class StatView(ListView):
     template_name = 'stats/statistics.html'
 
     def post(self,request):
-
-        db = nfldb.connect()
-
         player_names = request.session['players']
 
         players = list()
         for player in player_names:
-            players.append(Player(player, db, 2015))
+            players.append(Player(player))
             
         dataDict = {}
         playerDict = {}
         dataDict['year'] = 2015
 
         for player in players:
-            playerDict[player.name] = player.getData()
+            playerDict[player.name] = player.get_data()
 
         dataDict['players'] = playerDict
 
