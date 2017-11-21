@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 import nfldb
 import nfldb.types as types
+from enum import Enum
 
 
 
@@ -222,7 +223,7 @@ class KickerStats(PositionStats):
         self.kicking_xpmissed = stats.kicking_xpmissed
 
 
-class Player:
+class Player(object):
     def __init__(self, name):
         self.name = name
 
@@ -240,12 +241,51 @@ class Player:
         elif position == types.Enums.player_pos.K:
             self.position_stats = KickerStats(name, position)
 
+        self.fantasy_stats = fantasy_scores(self.position_stats, 'Espn_Standard_Scoring')
+
     def get_data(self):
         data = list()
 
         basic = self.basic_info.get_basic_info()
         stats = self.position_stats.get_stats()
+        # need to add get_scoring() for fantasy
 
+        # Should probably do something different with return value.
+        #  Will want to distinguish between these
+        #  Dict of lists? 1st list is of basic info, 2nd of stats, 3rd of fantasy stuff
         data = basic + stats
 
         return data
+
+class Espn_Standard_Scoring(Enum):
+    PASSING_YDS = 0.04
+    PASSING_TDS = 4
+    PASSING_INT = -2
+
+    RUSHING_YDS = 0.1
+    RUSHING_TDS = 6
+
+    RECEIVING_YDS = 0.1
+    RECEIVING_TDS = 6
+
+    FUMBLES_LOST = -2
+
+    # Kicking won't work until figure out distance of each kick
+
+class fantasy_scores(object):
+    def __init__(self, position_stats, scoring_system):
+        # default scoring system is ESPN standard
+        scoring = Espn_Standard_Scoring
+
+        self.passing_yds = position_stats.passing_yds * scoring.PASSING_YDS.value
+        self.passing_tds = position_stats.passing_tds * scoring.PASSING_TDS.value
+        self.passing_int = position_stats.passing_int * scoring.PASSING_INT.value
+
+        self.rushing_yds = position_stats.rushing_yds * scoring.RUSHING_YDS.value
+        self.rushing_tds = position_stats.rushing_tds * scoring.RUSHING_TDS.value
+
+        self.receiving_yds = position_stats.receiving_yds * scoring.RECEIVING_YDS.value
+        self.receiving_tds = position_stats.receiving_tds * scoring.RECEIVING_TDS.value
+
+        self.fumbles_lost = position_stats.fumbles_lost * scoring.FUMBLES_LOST.value
+    
