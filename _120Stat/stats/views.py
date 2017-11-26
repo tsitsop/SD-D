@@ -57,7 +57,7 @@ class StatView(ListView):
         process the names to get stats, and display the stats.
     '''
 
-    template_name = 'stats/statistics.html'
+    template_name = 'stats/test.html'
 
     def post(self,request):
         player_names = request.session['players']
@@ -65,22 +65,27 @@ class StatView(ListView):
         players = list()
         for player in player_names:
             players.append(Player(player))
-            
+
         dataDict = {}
         playerDict = {}
         dataDict['year'] = 2015
 
         for player in players:
-            playerDict[player.name] = player.get_data()
-
+            playerDict[player.name] = {}
+            playerDict[player.name]["BasicInfo"] = player.get_info()
+            playerDict[player.name]["CarrerStats"] = player.get_stats()
+            playerDict[player.name]["FantasyStats"] = player.get_fantasy()
         dataDict['players'] = playerDict
-
         '''
         dataDict = {
 
                     year: number
                     players:{
-                                "Tom Brady": [("stat1",n),]
+                                "Tom Brady": {
+
+                                                    BasicInfo: [("stat1",n),]
+                                                    CarrerInfo: [("stat1",n),]
+                                             }
                                 "Other Guy": [("stat1",n),]
                             }
 

@@ -20,8 +20,8 @@ class BasicInfo(object):
 
         # this currently gets the first player returned
         #  so we may need to change in future
-        info = q.as_players()[0] 
-        
+        info = q.as_players()[0]
+
         # store basic info
         self.position = info.position
         self.uniform_number = info.uniform_number
@@ -151,7 +151,7 @@ class QuarterbackStats(PositionStats):
 
 
 class RunningbackStats(PositionStats):
-    def __init__(self, name, position): 
+    def __init__(self, name, position):
         super(RunningbackStats, self).__init__()
 
         db = nfldb.connect()
@@ -243,18 +243,25 @@ class Player(object):
 
         self.fantasy_stats = fantasy_scores(self.position_stats, 'Espn_Standard_Scoring')
 
-    def get_data(self):
+    def get_info(self):
         data = list()
 
-        basic = self.basic_info.get_basic_info()
-        stats = self.position_stats.get_stats()
+        data = self.basic_info.get_basic_info()
         # need to add get_scoring() for fantasy
 
         # Should probably do something different with return value.
         #  Will want to distinguish between these
         #  Dict of lists? 1st list is of basic info, 2nd of stats, 3rd of fantasy stuff
-        data = basic + stats
+        return data
+    def get_stats(self):
+        data = list()
 
+        data = self.position_stats.get_stats()
+
+        return data
+    def get_fantasy(self):
+        data = list()
+        data = self.fantasy_stats.get_stats()
         return data
 
 class Espn_Standard_Scoring(Enum):
@@ -288,4 +295,19 @@ class fantasy_scores(object):
         self.receiving_tds = position_stats.receiving_tds * scoring.RECEIVING_TDS.value
 
         self.fumbles_lost = position_stats.fumbles_lost * scoring.FUMBLES_LOST.value
-    
+    def get_stats(self):
+        data = list()
+
+        data.append(("Passing Yards", self.passing_yds))
+        data.append(("Passing Touchdowns", self.passing_tds))
+        data.append(("Passing Interceptions", self.passing_int))
+
+        data.append(("Russing Yards", self.rushing_yds))
+        data.append(("Russing Touchdowns", self.rushing_tds))
+
+        data.append(("Recieving Yards", self.receiving_yds))
+        data.append(("Recieving Touchdowns", self.receiving_tds))
+
+        data.append(("Fumbles Lost", self.fumbles_lost))
+
+        return data

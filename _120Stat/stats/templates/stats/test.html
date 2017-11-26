@@ -1,0 +1,16 @@
+{% extends "stats/header.html" %}
+{% block content %}
+
+{% for k,v in players.items %}
+
+<p>{{k}}
+  {% for i,j in v.items%}
+  <p>{{i}}
+    {{j}}
+  </p>
+  {% endfor %}
+</p>
+
+{% endfor %}
+
+{% endblock %}
