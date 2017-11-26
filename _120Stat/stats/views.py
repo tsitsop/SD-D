@@ -17,9 +17,15 @@ class ContactView(TemplateView):
         return render(request,self.template_name,{'content':["Names","Zachary Maurer"]})
 
 class HomeView(TemplateView):
+    '''
+        This view will render a set of forms for users to enter player names.
+        It also will process user input to get player names, calling StatView to
+        process and display player stats.
+    '''
+
     template_name = "stats/home.html"
-    PlayerFormSet = formset_factory(PlayerForm, extra=2)
-    
+    PlayerFormSet = formset_factory(PlayerForm, extra=4)
+
     def get(self, request):
         # will render home.html, passing in our form
         return render(request, self.template_name, {'formset': self.PlayerFormSet})
@@ -31,7 +37,11 @@ class HomeView(TemplateView):
 
         if formset.is_valid():
             for form in formset:
-                players.append(form.cleaned_data['player_name'])
+                # will hold player name if a name was in the form
+                # or false otherwise
+                player_name = form.cleaned_data.get('player_name', False)
+                if player_name != False:
+                    players.append(player_name)
 
             request.session['players'] = players
 
@@ -42,6 +52,11 @@ class HomeView(TemplateView):
         return render(request, self.template_name, {'form': form})
 
 class StatView(ListView):
+    '''
+        This view will be called by HomeView. It can receive player names entered by the user,
+        process the names to get stats, and display the stats.
+    '''
+
     template_name = 'stats/statistics.html'
 
     def post(self,request):
