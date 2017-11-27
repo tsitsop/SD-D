@@ -121,107 +121,142 @@ class PositionStats(object):
 
 
 class QuarterbackStats(PositionStats):
-    def __init__(self, name, position):
+    def __init__(self, name, position,year):
         super(QuarterbackStats, self).__init__()
 
         db = nfldb.connect()
 
         q = nfldb.Query(db)
-        q.game(season_type='Regular')
+
+        #case for carrer or yearly stats
+        if (year == -1):
+            q.game(season_type='Regular')
+        else:
+            q.game(season_year=year,season_type='Regular')
+
         q.player(full_name=name, position=position)
 
-        stats = q.as_aggregate()[0]
 
-        self.passing_att = stats.passing_att
-        self.passing_cmp = stats.passing_cmp
-        self.passing_incmp = stats.passing_incmp
-        self.passing_yds = stats.passing_yds
-        self.passing_incmp_air_yds = stats.passing_incmp_air_yds
-        self.passing_cmp_air_yds = stats.passing_cmp_air_yds
-        self.passing_tds = stats.passing_tds
-        self.passing_int = stats.passing_int
-        self.passing_sk = stats.passing_sk
+        stats = q.as_aggregate()
 
-        self.rushing_att = stats.rushing_att
-        self.rushing_yds = stats.rushing_yds
-        self.rushing_tds = stats.rushing_tds
+        if len(stats)>0:
+            stats = stats[0]
+            self.passing_att = stats.passing_att
+            self.passing_cmp = stats.passing_cmp
+            self.passing_incmp = stats.passing_incmp
+            self.passing_yds = stats.passing_yds
+            self.passing_incmp_air_yds = stats.passing_incmp_air_yds
+            self.passing_cmp_air_yds = stats.passing_cmp_air_yds
+            self.passing_tds = stats.passing_tds
+            self.passing_int = stats.passing_int
+            self.passing_sk = stats.passing_sk
 
-        self.fumbles_tot = stats.fumbles_tot
-        self.fumbles_lost = stats.fumbles_lost
+            self.rushing_att = stats.rushing_att
+            self.rushing_yds = stats.rushing_yds
+            self.rushing_tds = stats.rushing_tds
+
+            self.fumbles_tot = stats.fumbles_tot
+            self.fumbles_lost = stats.fumbles_lost
 
 
 class RunningbackStats(PositionStats):
-    def __init__(self, name, position):
+    def __init__(self, name, position,year):
         super(RunningbackStats, self).__init__()
 
         db = nfldb.connect()
 
         q = nfldb.Query(db)
-        q.game(season_type='Regular')
+
+        #case for carrer or yearly stats
+        if (year == -1):
+            q.game(season_type='Regular')
+        else:
+            q.game(season_year=year,season_type='Regular')
+
         q.player(full_name=name, position=position)
 
-        stats = q.as_aggregate()[0]
+        stats = q.as_aggregate()
 
-        self.rushing_att = stats.rushing_att
-        self.rushing_yds = stats.rushing_yds
-        self.rushing_tds = stats.rushing_tds
+        if len(stats)>0:
+            stats = stats[0]
 
-        self.fumbles_tot = stats.fumbles_tot
-        self.fumbles_lost = stats.fumbles_lost
+            self.rushing_att = stats.rushing_att
+            self.rushing_yds = stats.rushing_yds
+            self.rushing_tds = stats.rushing_tds
 
-        self.receiving_tar = stats.receiving_tar
-        self.receiving_rec = stats.receiving_rec
-        self.receiving_yds = stats.receiving_yds
-        self.receiving_tds = stats.receiving_tds
-        self.receiving_yac_yds = stats.receiving_yac_yds
+            self.fumbles_tot = stats.fumbles_tot
+            self.fumbles_lost = stats.fumbles_lost
+
+            self.receiving_tar = stats.receiving_tar
+            self.receiving_rec = stats.receiving_rec
+            self.receiving_yds = stats.receiving_yds
+            self.receiving_tds = stats.receiving_tds
+            self.receiving_yac_yds = stats.receiving_yac_yds
 
 
 class WideReceiverTightEndStats(PositionStats):
-    def __init__(self, name, position):
+    def __init__(self, name, position,year):
         super(WideReceiverTightEndStats, self).__init__()
 
         db = nfldb.connect()
 
         q = nfldb.Query(db)
-        q.game(season_type='Regular')
+
+        #case for carrer or yearly stats
+        if (year == -1):
+            q.game(season_type='Regular')
+        else:
+            q.game(season_year=year,season_type='Regular')
+
         q.player(full_name=name, position=position)
 
-        stats = q.as_aggregate()[0]
+        stats = q.as_aggregate()
 
-        self.fumbles_tot = stats.fumbles_tot
-        self.fumbles_lost = stats.fumbles_lost
+        if len(stats)>0:
+            stats = stats[0]
 
-        self.receiving_tar = stats.receiving_tar
-        self.receiving_rec = stats.receiving_rec
-        self.receiving_yds = stats.receiving_yds
-        self.receiving_tds = stats.receiving_tds
-        self.receiving_yac_yds = stats.receiving_yac_yds
+            self.fumbles_tot = stats.fumbles_tot
+            self.fumbles_lost = stats.fumbles_lost
+
+            self.receiving_tar = stats.receiving_tar
+            self.receiving_rec = stats.receiving_rec
+            self.receiving_yds = stats.receiving_yds
+            self.receiving_tds = stats.receiving_tds
+            self.receiving_yac_yds = stats.receiving_yac_yds
 
 
 class KickerStats(PositionStats):
-    def __init__(self, name, position):
+    def __init__(self, name, position,year):
         super(KickerStats, self).__init__()
 
         db = nfldb.connect()
 
         q = nfldb.Query(db)
-        q.game(season_type='Regular')
+
+        #case for carrer or yearly stats
+        if (year == -1):
+            q.game(season_type='Regular')
+        else:
+            q.game(season_year=year,season_type='Regular')
+
         q.player(full_name=name, position=position)
 
-        stats = q.as_aggregate()[0]
+        stats = q.as_aggregate()
 
-        self.kicking_fga = stats.kicking_fga
-        self.kicking_fgm = stats.kicking_fgm
-        self.kicking_fgmissed = stats.kicking_fgmissed
+        if len(stats)>0:
+            stats = stats[0]
+
+            self.kicking_fga = stats.kicking_fga
+            self.kicking_fgm = stats.kicking_fgm
+            self.kicking_fgmissed = stats.kicking_fgmissed
 
         # maybe -- depends how this works. need to see if per kick or total kicks
-        self.kicking_fgm_yds = stats.kicking_fgm_yds
-        self.kicking_fgmissed_yds = stats.kicking_fgmissed_yds
+            self.kicking_fgm_yds = stats.kicking_fgm_yds
+            self.kicking_fgmissed_yds = stats.kicking_fgmissed_yds
 
-        self.kicking_xpa = stats.kicking_xpa
-        self.kicking_xpmade = stats.kicking_xpmade
-        self.kicking_xpmissed = stats.kicking_xpmissed
-
+            self.kicking_xpa = stats.kicking_xpa
+            self.kicking_xpmade = stats.kicking_xpmade
+            self.kicking_xpmissed = stats.kicking_xpmissed
 
 class Player(object):
     def __init__(self, name):
@@ -229,17 +264,22 @@ class Player(object):
 
         self.basic_info = BasicInfo(name)
 
-        position = self.basic_info.position
+        self.yearly_stats = list()
 
+        position = self.basic_info.position
         # all of the classes here get CAREER stats - will need to modify to get yearly stats
         if position == types.Enums.player_pos.QB:
-            self.position_stats = QuarterbackStats(name, position)
+            self.position_stats = QuarterbackStats(name, position,-1)
+            #for each active year, add to yearly_stats
+            for x in xrange(2017,2009,-1):
+                self.yearly_stats.append(QuarterbackStats(name,position,x))
+
         elif position == types.Enums.player_pos.RB:
-            self.position_stats = RunningbackStats(name, position)
+            self.position_stats = RunningbackStats(name, position,-1)
         elif position == types.Enums.player_pos.WR or position == types.Enums.player_pos.WR:
-            self.position_stats = WideReceiverTightEndStats(name, position)
+            self.position_stats = WideReceiverTightEndStats(name, position,-1)
         elif position == types.Enums.player_pos.K:
-            self.position_stats = KickerStats(name, position)
+            self.position_stats = KickerStats(name, position,-1)
 
         self.fantasy_stats = fantasy_scores(self.position_stats, 'Espn_Standard_Scoring')
 
@@ -263,7 +303,10 @@ class Player(object):
         data = list()
         data = self.fantasy_stats.get_stats()
         return data
-
+    def get_yearly_stats(self):
+        data = list()
+        data = self.yearly_stats
+        return data
 class Espn_Standard_Scoring(Enum):
     PASSING_YDS = 0.04
     PASSING_TDS = 4

@@ -75,18 +75,21 @@ class StatView(ListView):
             playerDict[player.name]["BasicInfo"] = player.get_info()
             playerDict[player.name]["CarrerStats"] = player.get_stats()
             playerDict[player.name]["FantasyStats"] = player.get_fantasy()
+            playerDict[player.name]["YearlyStats"] = player.get_yearly_stats()
         dataDict['players'] = playerDict
         '''
         dataDict = {
 
                     year: number
                     players:{
-                                "Tom Brady": {
+                                "Player Name": {
 
                                                     BasicInfo: [("stat1",n),]
                                                     CarrerInfo: [("stat1",n),]
+                                                    FantasyStats:
+                                                    YearlyStats: [[year1]
+                                                                  [year2]]
                                              }
-                                "Other Guy": [("stat1",n),]
                             }
 
                     }
