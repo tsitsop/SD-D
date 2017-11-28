@@ -7,7 +7,6 @@ import nfldb.types as types
 from enum import Enum
 
 
-
 class BasicInfo(object):
     def __init__(self, name):
         self.name = name
@@ -34,17 +33,17 @@ class BasicInfo(object):
         self.years_pro = info.years_pro
 
     def get_basic_info(self):
-        data = list()
+        data = dict()
 
-        data.append(("Position", self.position))
-        data.append(("Uniform Number", self.uniform_number))
-        data.append(("Birthdate", self.birthdate))
-        data.append(("Height", self.height))
-        data.append(("Weight", self.weight))
-        data.append(("College", self.college))
-        data.append(("Status", self.status))
-        data.append(("Team", self.team))
-        data.append(("Years Pro", self.years_pro))
+        data["Position"] = self.position
+        data["Uniform Number"] = self.uniform_number
+        data["Birthdate"] = self.birthdate
+        data["Height"] = self.height
+        data["Weight"] = self.weight
+        data["College"] = self.college
+        data["Status"] = self.status
+        data["Team"] = self.team
+        data["Years Pro"] = self.years_pro
 
         return data
 
@@ -87,34 +86,34 @@ class PositionStats(object):
         self.kicking_xpmissed = 0
 
     def get_stats(self):
-        data = list()
+        data = dict()
 
-        data.append(("Passing Attempts", self.passing_att))
-        data.append(("Passing Completions", self.passing_cmp))
-        data.append(("Passing Incompletions", self.passing_incmp))
-        data.append(("Passing Yards", self.passing_yds))
-        data.append(("Passing Touchdowns", self.passing_tds))
-        data.append(("Passing Interceptions", self.passing_int))
-        data.append(("Passing Sacks", self.passing_sk))
+        data["Passing Attempts"] = self.passing_att
+        data["Passing Completions"] = self.passing_cmp
+        data["Passing Incompletions"] = self.passing_incmp
+        data["Passing Yards"] = self.passing_yds
+        data["Passing Touchdowns"] = self.passing_tds
+        data["Passing Interceptions"] = self.passing_int
+        data["Passing Sacks"] = self.passing_sk
 
-        data.append(("Rushing Yards", self.rushing_yds))
-        data.append(("Rushing Attempts", self.rushing_att))
-        data.append(("Rushing Touchdowns", self.rushing_tds))
+        data["Rushing Yards"] = self.rushing_yds
+        data["Rushing Attempts"] = self.rushing_att
+        data["Rushing Touchdowns"] = self.rushing_tds
 
-        data.append(("Recieving Targets", self.receiving_tar))
-        data.append(("Recieving Receptions", self.receiving_rec))
-        data.append(("Recieving Yards", self.receiving_yds))
-        data.append(("Recieving Touchdowns", self.receiving_tds))
-        data.append(("Recieving Yards After Catch (YAC)", self.receiving_yac_yds))
+        data["Recieving Targets"] = self.receiving_tar
+        data["Recieving Receptions"] = self.receiving_rec
+        data["Recieving Yards"] = self.receiving_yds
+        data["Recieving Touchdowns"] = self.receiving_tds
+        data["Recieving Yards After Catch (YAC)"] = self.receiving_yac_yds
 
-        data.append(("Fumbles Total", self.fumbles_tot))
-        data.append(("Fumbles Lost", self.fumbles_lost))
+        data["Fumbles Total"] = self.fumbles_tot
+        data["Fumbles Lost"] = self.fumbles_lost
 
-        data.append(("Field Goals Attempted", self.kicking_fga))
-        data.append(("Field Goals Missed", self.kicking_fgmissed))
-        data.append(("Field Goal Made Yards", self.kicking_fgm_yds))
-        data.append(("Extra Points Attempted", self.kicking_xpa))
-        data.append(("Extra Points Missed", self.kicking_xpmissed))
+        data["Field Goals Attempted"] = self.kicking_fga
+        data["Field Goals Missed"] = self.kicking_fgmissed
+        data["Field Goal Made Yards"] = self.kicking_fgm_yds
+        data["Extra Points Attempted"] = self.kicking_xpa
+        data["Extra Points Missed"] = self.kicking_xpmissed
         # may be missing some kicking stats
 
         return data
@@ -306,13 +305,15 @@ class Player(object):
 
                 for week in range(1, 18):
                     self.yearly_stats[year][week] = \
-                            WideReceiverTightEndStats(name, position, year=year, week=week).get_stats()
+                            WideReceiverTightEndStats(name, position, year=year, week=week)\
+                            .get_stats()
 
         elif position == types.Enums.player_pos.K:
             self.position_stats = KickerStats(name, position)
             for year in range(2017, 2008, -1):
                 self.yearly_stats[year] = dict()
-                self.yearly_stats[year]['Summary'] = KickerStats(name, position, year=year).get_stats()
+                self.yearly_stats[year]['Summary'] = KickerStats(name, position, year=year)\
+                    .get_stats()
 
                 for week in range(1, 18):
                     self.yearly_stats[year][week] = \
@@ -387,18 +388,18 @@ class fantasy_scores(object):
         self.fumbles_lost = position_stats.fumbles_lost * scoring.FUMBLES_LOST.value
     
     def get_stats(self):
-        data = list()
+        data = dict()
 
-        data.append(("Passing Yards", self.passing_yds))
-        data.append(("Passing Touchdowns", self.passing_tds))
-        data.append(("Passing Interceptions", self.passing_int))
+        data["Passing Yards"] = self.passing_yds
+        data["Passing Touchdowns"] = self.passing_tds
+        data["Passing Interceptions"] = self.passing_int
 
-        data.append(("Russing Yards", self.rushing_yds))
-        data.append(("Russing Touchdowns", self.rushing_tds))
+        data["Russing Yards"] = self.rushing_yds
+        data["Russing Touchdowns"] = self.rushing_tds
 
-        data.append(("Recieving Yards", self.receiving_yds))
-        data.append(("Recieving Touchdowns", self.receiving_tds))
+        data["Recieving Yards"] = self.receiving_yds
+        data["Recieving Touchdowns"] = self.receiving_tds
 
-        data.append(("Fumbles Lost", self.fumbles_lost))
+        data["Fumbles Lost"] = self.fumbles_lost
 
         return data

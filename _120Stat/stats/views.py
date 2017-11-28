@@ -9,12 +9,12 @@ from django.forms.formsets import formset_factory
 
 from stats.models import Player
 
-import nfldb
+def about_view(request):
+    ''' This view simply renders the About page '''
+    template_name = "stats/about.html"
 
-class ContactView(TemplateView):
-    template_name = "stats/basic.html"
-    def get(self, request):
-        return render(request,self.template_name,{'content':["Names","Zachary Maurer"]})
+    return render(request, template_name)
+
 
 class HomeView(TemplateView):
     '''
@@ -27,11 +27,14 @@ class HomeView(TemplateView):
     PlayerFormSet = formset_factory(PlayerForm, extra=4)
 
     def get(self, request):
-        # will render home.html, passing in our form
+        ''' Render home.html, passing in our form, when a user visits home page '''
         return render(request, self.template_name, {'formset': self.PlayerFormSet})
 
-    # when the user hits submit, a POST request is created. The below function is called.
     def post(self, request):
+        '''
+            Gathers user input and validates it upon the user clicking the Submit button.
+            Calls StatView to display the stats
+        '''
         formset = self.PlayerFormSet(request.POST)
         players = list()
 
@@ -49,7 +52,7 @@ class HomeView(TemplateView):
             # return redirect('stats:statistics')
 
         # if data invalid, request user input again. Need to show some sort of error here too.
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'formset': formset})
 
 class StatView(ListView):
     '''
@@ -59,7 +62,11 @@ class StatView(ListView):
 
     template_name = 'stats/test.html'
 
-    def post(self,request):
+    def post(self, request):
+        '''
+            This function is called when a POST request is made when HomeView renders this page.
+            It creates the player objects and renders the statistics page that displays the stats.
+        '''
         player_names = request.session['players']
 
         players = list()
@@ -74,17 +81,22 @@ class StatView(ListView):
         player_dict format:
             player_dict = {
                             "Player Name": {
-                                            BasicInfo: [("stat1",n),]
-                                            CareerInfo: [("stat1",n),]
-                                            FantasyStats:
+                                            BasicInfo: {"info1": n
+                                                        "info2": n}
+                                            CareerStats: {"stat1": n
+                                                          "stat2": n}
+                                            FantasyStats: {"stat1": n
+                                                           "stat2": n}
                                             YearlyStats: {
-                                                            year1: {
-                                                                    Summary: [("stat1",n)]
-                                                                    1: [("stat1",n)]    <--- list of week numbers with stats
-                                                                    }
-                                                            year2: ...
+                                                          year1: {
+                                                                  Summary: {"stat1": n
+                                                                            "stat2": n}
+                                                                  1: {"stat1": n
+                                                                      "stat2": n} }    <--- list of week numbers with stats 
+                                                          year2: ...
                                                          }
                                             }
                             }
         '''
+
         return render(request, self.template_name, player_dict)
