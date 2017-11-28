@@ -66,32 +66,25 @@ class StatView(ListView):
         for player in player_names:
             players.append(Player(player))
 
-        dataDict = {}
-        playerDict = {}
-        dataDict['year'] = 2015
-
+        player_dict = {}
         for player in players:
-            playerDict[player.name] = {}
-            playerDict[player.name]["BasicInfo"] = player.get_info()
-            playerDict[player.name]["CarrerStats"] = player.get_stats()
-            playerDict[player.name]["FantasyStats"] = player.get_fantasy()
-            playerDict[player.name]["YearlyStats"] = player.get_yearly_stats()
-        dataDict['players'] = playerDict
+            player_dict[player.name] = player.get_player()
+
         '''
-        dataDict = {
-
-                    year: number
-                    players:{
-                                "Player Name": {
-
-                                                    BasicInfo: [("stat1",n),]
-                                                    CarrerInfo: [("stat1",n),]
-                                                    FantasyStats:
-                                                    YearlyStats: [[year1]
-                                                                  [year2]]
-                                             }
+        player_dict format:
+            player_dict = {
+                            "Player Name": {
+                                            BasicInfo: [("stat1",n),]
+                                            CareerInfo: [("stat1",n),]
+                                            FantasyStats:
+                                            YearlyStats: {
+                                                            year1: {
+                                                                    Summary: [("stat1",n)]
+                                                                    1: [("stat1",n)]    <--- list of week numbers with stats
+                                                                    }
+                                                            year2: ...
+                                                         }
+                                            }
                             }
-
-                    }
         '''
-        return render(request,self.template_name,dataDict)
+        return render(request, self.template_name, player_dict)

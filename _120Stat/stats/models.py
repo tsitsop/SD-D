@@ -121,7 +121,7 @@ class PositionStats(object):
 
 
 class QuarterbackStats(PositionStats):
-    def __init__(self, name, position,year):
+    def __init__(self, name, position, **keyword_params):
         super(QuarterbackStats, self).__init__()
 
         db = nfldb.connect()
@@ -129,17 +129,19 @@ class QuarterbackStats(PositionStats):
         q = nfldb.Query(db)
 
         #case for carrer or yearly stats
-        if (year == -1):
-            q.game(season_type='Regular')
+        if 'year' in keyword_params:
+            q.game(season_year=keyword_params['year'], season_type='Regular')
+            if 'week' in keyword_params:
+                q.game(week=keyword_params['week'])
         else:
-            q.game(season_year=year,season_type='Regular')
+            q.game(season_type='Regular')
 
         q.player(full_name=name, position=position)
 
 
         stats = q.as_aggregate()
 
-        if len(stats)>0:
+        if len(stats) > 0:
             stats = stats[0]
             self.passing_att = stats.passing_att
             self.passing_cmp = stats.passing_cmp
@@ -160,24 +162,25 @@ class QuarterbackStats(PositionStats):
 
 
 class RunningbackStats(PositionStats):
-    def __init__(self, name, position,year):
+    def __init__(self, name, position, **keyword_params):
         super(RunningbackStats, self).__init__()
 
         db = nfldb.connect()
 
         q = nfldb.Query(db)
 
-        #case for carrer or yearly stats
-        if (year == -1):
-            q.game(season_type='Regular')
+        if 'year' in keyword_params:
+            q.game(season_year=keyword_params['year'], season_type='Regular')
+            if 'week' in keyword_params:
+                q.game(week=keyword_params['week'])
         else:
-            q.game(season_year=year,season_type='Regular')
+            q.game(season_type='Regular')
 
         q.player(full_name=name, position=position)
 
         stats = q.as_aggregate()
 
-        if len(stats)>0:
+        if len(stats) > 0:
             stats = stats[0]
 
             self.rushing_att = stats.rushing_att
@@ -195,24 +198,25 @@ class RunningbackStats(PositionStats):
 
 
 class WideReceiverTightEndStats(PositionStats):
-    def __init__(self, name, position,year):
+    def __init__(self, name, position, **keyword_params):
         super(WideReceiverTightEndStats, self).__init__()
 
         db = nfldb.connect()
 
         q = nfldb.Query(db)
 
-        #case for carrer or yearly stats
-        if (year == -1):
-            q.game(season_type='Regular')
+        if 'year' in keyword_params:
+            q.game(season_year=keyword_params['year'], season_type='Regular')
+            if 'week' in keyword_params:
+                q.game(week=keyword_params['week'])
         else:
-            q.game(season_year=year,season_type='Regular')
+            q.game(season_type='Regular')
 
         q.player(full_name=name, position=position)
 
         stats = q.as_aggregate()
 
-        if len(stats)>0:
+        if len(stats) > 0:
             stats = stats[0]
 
             self.fumbles_tot = stats.fumbles_tot
@@ -226,24 +230,25 @@ class WideReceiverTightEndStats(PositionStats):
 
 
 class KickerStats(PositionStats):
-    def __init__(self, name, position,year):
+    def __init__(self, name, position, **keyword_params):
         super(KickerStats, self).__init__()
 
         db = nfldb.connect()
 
         q = nfldb.Query(db)
 
-        #case for carrer or yearly stats
-        if (year == -1):
-            q.game(season_type='Regular')
+        if 'year' in keyword_params:
+            q.game(season_year=keyword_params['year'], season_type='Regular')
+            if 'week' in keyword_params:
+                q.game(week=keyword_params['week'])
         else:
-            q.game(season_year=year,season_type='Regular')
+            q.game(season_type='Regular')
 
         q.player(full_name=name, position=position)
 
         stats = q.as_aggregate()
 
-        if len(stats)>0:
+        if len(stats) > 0:
             stats = stats[0]
 
             self.kicking_fga = stats.kicking_fga
@@ -258,55 +263,97 @@ class KickerStats(PositionStats):
             self.kicking_xpmade = stats.kicking_xpmade
             self.kicking_xpmissed = stats.kicking_xpmissed
 
+
 class Player(object):
     def __init__(self, name):
         self.name = name
 
         self.basic_info = BasicInfo(name)
 
-        self.yearly_stats = list()
+        self.yearly_stats = dict()
 
         position = self.basic_info.position
-        # all of the classes here get CAREER stats - will need to modify to get yearly stats
+
+        # following statements will populate all fields for a player
         if position == types.Enums.player_pos.QB:
-            self.position_stats = QuarterbackStats(name, position,-1)
-            #for each active year, add to yearly_stats
-            for x in xrange(2017,2009,-1):
-                self.yearly_stats.append(QuarterbackStats(name,position,x))
+            self.position_stats = QuarterbackStats(name, position)
+            for year in range(2017, 2008, -1):
+                self.yearly_stats[year] = dict()
+                self.yearly_stats[year]['Summary'] = \
+                        QuarterbackStats(name, position, year=year).get_stats()
+
+                for week in range(1, 18):
+                    self.yearly_stats[year][week] = \
+                            QuarterbackStats(name, position, year=year, week=week).get_stats()
 
         elif position == types.Enums.player_pos.RB:
-            self.position_stats = RunningbackStats(name, position,-1)
+            self.position_stats = RunningbackStats(name, position)
+            for year in range(2017, 2008, -1):
+                self.yearly_stats[year] = dict()
+                self.yearly_stats[year]['Summary'] = \
+                        RunningbackStats(name, position, year=year).get_stats()
+
+                for week in range(1, 18):
+                    self.yearly_stats[year][week] = \
+                            RunningbackStats(name, position, year=year, week=week).get_stats()
+
         elif position == types.Enums.player_pos.WR or position == types.Enums.player_pos.WR:
-            self.position_stats = WideReceiverTightEndStats(name, position,-1)
+            self.position_stats = WideReceiverTightEndStats(name, position)
+            for year in range(2017, 2008, -1):
+                self.yearly_stats[year] = dict()
+                self.yearly_stats[year]['Summary'] = \
+                        WideReceiverTightEndStats(name, position, year=year).get_stats()
+
+                for week in range(1, 18):
+                    self.yearly_stats[year][week] = \
+                            WideReceiverTightEndStats(name, position, year=year, week=week).get_stats()
+
         elif position == types.Enums.player_pos.K:
-            self.position_stats = KickerStats(name, position,-1)
+            self.position_stats = KickerStats(name, position)
+            for year in range(2017, 2008, -1):
+                self.yearly_stats[year] = dict()
+                self.yearly_stats[year]['Summary'] = KickerStats(name, position, year=year).get_stats()
+
+                for week in range(1, 18):
+                    self.yearly_stats[year][week] = \
+                            QuarterbackStats(name, position, year=year, week=week).get_stats()
 
         self.fantasy_stats = fantasy_scores(self.position_stats, 'Espn_Standard_Scoring')
+
+    def get_player(self):
+        data = dict()
+
+        data["BasicInfo"] = self.get_info()
+        data["CareerStats"] = self.get_stats()
+        data["FantasyStats"] = self.get_fantasy()
+        data["YearlyStats"] = self.get_yearly_stats()
+
+        return data
 
     def get_info(self):
         data = list()
 
         data = self.basic_info.get_basic_info()
-        # need to add get_scoring() for fantasy
-
-        # Should probably do something different with return value.
-        #  Will want to distinguish between these
-        #  Dict of lists? 1st list is of basic info, 2nd of stats, 3rd of fantasy stuff
         return data
+
     def get_stats(self):
         data = list()
 
         data = self.position_stats.get_stats()
 
         return data
+
     def get_fantasy(self):
         data = list()
+
         data = self.fantasy_stats.get_stats()
         return data
+
     def get_yearly_stats(self):
-        data = list()
         data = self.yearly_stats
         return data
+
+
 class Espn_Standard_Scoring(Enum):
     PASSING_YDS = 0.04
     PASSING_TDS = 4
@@ -338,6 +385,7 @@ class fantasy_scores(object):
         self.receiving_tds = position_stats.receiving_tds * scoring.RECEIVING_TDS.value
 
         self.fumbles_lost = position_stats.fumbles_lost * scoring.FUMBLES_LOST.value
+    
     def get_stats(self):
         data = list()
 
