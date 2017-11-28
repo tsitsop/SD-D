@@ -7,30 +7,44 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.forms.formsets import formset_factory
 
-from _120_Player.Player import Player
-import nfldb
+from stats.models import Player
 
-class ContactView(TemplateView):
-    template_name = "stats/basic.html"
-    def get(self, request):
-        return render(request,self.template_name,{'content':["Names","Zachary Maurer"]})
+def about_view(request):
+    ''' This view simply renders the About page '''
+    template_name = "stats/about.html"
+
+    return render(request, template_name)
+
 
 class HomeView(TemplateView):
+    '''
+        This view will render a set of forms for users to enter player names.
+        It also will process user input to get player names, calling StatView to
+        process and display player stats.
+    '''
+
     template_name = "stats/home.html"
-    PlayerFormSet = formset_factory(PlayerForm, extra=2)
-    
+    PlayerFormSet = formset_factory(PlayerForm, extra=4)
+
     def get(self, request):
-        # will render home.html, passing in our form
+        ''' Render home.html, passing in our form, when a user visits home page '''
         return render(request, self.template_name, {'formset': self.PlayerFormSet})
 
-    # when the user hits submit, a POST request is created. The below function is called.
     def post(self, request):
+        '''
+            Gathers user input and validates it upon the user clicking the Submit button.
+            Calls StatView to display the stats
+        '''
         formset = self.PlayerFormSet(request.POST)
         players = list()
 
         if formset.is_valid():
             for form in formset:
-                players.append(form.cleaned_data['player_name'])
+                # will hold player name if a name was in the form
+                # or false otherwise
+                player_name = form.cleaned_data.get('player_name', False)
+                if player_name != False:
+                    players.append(player_name)
 
             request.session['players'] = players
 
@@ -38,39 +52,51 @@ class HomeView(TemplateView):
             # return redirect('stats:statistics')
 
         # if data invalid, request user input again. Need to show some sort of error here too.
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'formset': formset})
 
 class StatView(ListView):
-    template_name = 'stats/statistics.html'
+    '''
+        This view will be called by HomeView. It can receive player names entered by the user,
+        process the names to get stats, and display the stats.
+    '''
 
-    def post(self,request):
+    template_name = 'stats/test.html'
 
-        db = nfldb.connect()
-
+    def post(self, request):
+        '''
+            This function is called when a POST request is made when HomeView renders this page.
+            It creates the player objects and renders the statistics page that displays the stats.
+        '''
         player_names = request.session['players']
 
         players = list()
         for player in player_names:
-            players.append(Player(player, db, 2015))
-            
-        dataDict = {}
-        playerDict = {}
-        dataDict['year'] = 2015
+            players.append(Player(player))
 
+        player_dict = {}
         for player in players:
-            playerDict[player.name] = player.getData()
-
-        dataDict['players'] = playerDict
+            player_dict[player.name] = player.get_player()
 
         '''
-        dataDict = {
-
-                    year: number
-                    players:{
-                                "Tom Brady": [("stat1",n),]
-                                "Other Guy": [("stat1",n),]
+        player_dict format:
+            player_dict = {
+                            "Player Name": {
+                                            BasicInfo: {"info1": n
+                                                        "info2": n}
+                                            CareerStats: {"stat1": n
+                                                          "stat2": n}
+                                            FantasyStats: {"stat1": n
+                                                           "stat2": n}
+                                            YearlyStats: {
+                                                          year1: {
+                                                                  Summary: {"stat1": n
+                                                                            "stat2": n}
+                                                                  1: {"stat1": n
+                                                                      "stat2": n} }    <--- list of week numbers with stats 
+                                                          year2: ...
+                                                         }
+                                            }
                             }
-
-                    }
         '''
-        return render(request,self.template_name,dataDict)
+
+        return render(request, self.template_name, player_dict)
