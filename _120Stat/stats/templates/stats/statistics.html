@@ -23,73 +23,98 @@
 				{% endfor %}
 			{% endif %}
 		{% endfor %}
-		<table>
-			<caption>
-				<b>{{playerName}}</b>
-			</caption>
+		
+		<h5>
+			<b>{{playerName}}</b>
+		</h5>
 
-
-			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-				{% if statType == 'BasicInfo' %}
-					<tr>
-						<td colspan="2"><h2>{{statType}}</h2></td>
-					</tr>
-					{% for statName, statInfo in statGroup.items %}
-						{% if forloop.counter|divisibleby:2 %}
-							<tr class="oddRow">
-						{% else %}
-							<tr class="evenRow">
-						{% endif %}
-						<td>{{statName}}</td>
-						<td>{{statInfo}}</td>
-					</tr>
-					{% endfor %}
-				{% endif %}
-				
-			{% endfor %}
-
-			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-				<div>
-				{% if statType == 'CareerStats' %}
-					<tr>
-						<td colspan="2"><h2>{{statType}}</h2></td>
-					</tr>
-					{% for statName, statInfo in statGroup.items %}
-					{% if forloop.counter|divisibleby:2 %}
-					<tr class="oddRow">
-					{% else %}
-					<tr class="evenRow">
-					{% endif %}
-						<td>{{statName}}</td>
-						<td>{{statInfo}}</td>
-					</tr>
-					{% endfor %}
-				{% endif %}
+		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+			{% if statType == 'BasicInfo' %}
+				<div class="basicInfoDiv">
+					<table>
+						<tr>
+							<td colspan="2"><h2>{{statType}}</h2></td>
+						</tr>
+						{% for statName, statInfo in statGroup.items %}
+							{% if forloop.counter|divisibleby:2 %}
+								<tr class="oddRow">
+							{% else %}
+								<tr class="evenRow">
+							{% endif %}
+							<td>{{statName}}</td>
+							<td>{{statInfo}}</td>
+						</tr>
+						{% endfor %}
+					</table>
 				</div>
-			{% endfor %}
+			{% endif %}
+		{% endfor %}
 
-			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-				<div>
-				{% if statType == 'FantasyStats' %}
-					<tr>
-						<td>{{statType}}</td>
-					</tr>
-					{% for statName, statInfo in statGroup.items %}
-					<tr>
-						<td>{{statName}}</td>
-						<td>{{statInfo}}</td>
-					</tr>
-					{% endfor %}
-				{% endif %}
+		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+			{% if statType == 'CareerStats' %}
+				<div class="careerInfoDiv">
+					<table>
+						<tr>
+							<td colspan="2"><h2>{{statType}}</h2></td>
+						</tr>
+						{% for statName, statInfo in statGroup.items %}
+							{% if forloop.counter|divisibleby:2 %}
+								<tr class="oddRow">
+							{% else %}
+								<tr class="evenRow">
+							{% endif %}
+							<td>{{statName}}</td>
+							<td>{{statInfo}}</td>
+						</tr>
+						{% endfor %}
+					</table>
 				</div>
-			{% endfor %}
+			{% endif %}
+		{% endfor %}
 
-			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-				{% if statType == 'YearlyStats' %}
+		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+			{% if statType == 'YearlyStats' %}
+				<div class="yearlyInfoDiv">
+					<table>
+						<tr>
+							<td colspan="2"><h2>{{statType}}</h2></td>
+						</tr>
+						{% for statName, statInfo in statGroup.items %}
+							{% if forloop.counter|divisibleby:2 %}
+								<tr class="oddRow">
+							{% else %}
+								<tr class="evenRow">
+							{% endif %}
+							<td>{{statName}}</td>
+							<td>{{statInfo}}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			{% endif %}
+		{% endfor %}
 
-				{% endif %}
-			{% endfor %}
-		</table>
+		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+			{% if statType == 'FantasyStats' %}
+				<div class="fantasyInfoDiv">
+					<table>
+						<tr>
+							<td colspan="2"><h2>{{statType}}</h2></td>
+						</tr>
+						{% for statName, statInfo in statGroup.items %}
+							{% if forloop.counter|divisibleby:2 %}
+								<tr class="oddRow">
+							{% else %}
+								<tr class="evenRow">
+							{% endif %}
+							<td>{{statName}}</td>
+							<td>{{statInfo}}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			{% endif %}
+		{% endfor %}
 	</div>
 	{% endfor %}
 </div>

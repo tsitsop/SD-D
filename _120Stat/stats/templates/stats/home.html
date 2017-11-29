@@ -4,10 +4,16 @@
 	<form method="post">
 		{% csrf_token %}
 		{{ formset.management_form }}
-		{% for form in formset %}
-			{{form}}
-			<br>
-		{% endfor %}
-        <button type="submit">Search</button>
+		<div id="playerForm">
+			{% for form in formset %}
+				<div class="field">
+					<b>{{form}}</b>
+				<div>
+			{% endfor %}
+			<script type="text/javascript">
+				console.log("fuck the corporate world");
+			</script>
+        <button class="field" type="submit">Search</button>
+        </div>
     </form>
 {% endblock %}

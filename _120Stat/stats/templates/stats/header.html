@@ -14,9 +14,13 @@
 		<table>
 		    <th><h1><b>120Stat</b></h1></th>
 	    </table>
-		<div>
+		<div id="navBar">
+			<div class="navPage">
 				<a href ="{% url 'stats:get' %}">Home</a>
+			</div>
+			<div class="navPage">
 				<a href ="{% url 'stats:about' %}">About Us</a>
+			</div>
 		</div>
 		<div>
 	      {% block content %}
