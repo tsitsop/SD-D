@@ -14,7 +14,10 @@
 		<table>
 		    <th><h1><b>120Stat</b></h1></th>
 	    </table>
-	
+		<div>
+				<a href ="{% url 'stats:get' %}">Home</a>
+				<a href ="{% url 'stats:about' %}">About Us</a>
+		</div>
 		<div>
 	      {% block content %}
 	      {% endblock %}

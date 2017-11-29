@@ -1,13 +1,19 @@
+'''
+    This module contains the classes we will use to represent our data
+'''
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models
+#from django.db import models
 import nfldb
 import nfldb.types as types
 from enum import Enum
 
 
 class BasicInfo(object):
+    '''
+        contains non-statistical information about a player.
+    '''
     def __init__(self, name):
         self.name = name
 
@@ -33,6 +39,7 @@ class BasicInfo(object):
         self.years_pro = info.years_pro
 
     def get_basic_info(self):
+        '''returns the data we got as a dictionary'''
         data = dict()
 
         data["Position"] = self.position
@@ -49,6 +56,9 @@ class BasicInfo(object):
 
 
 class PositionStats(object):
+    '''
+        Has default values for each statistic, parent class to each position
+    '''
     def __init__(self):
         self.passing_att = 0
         self.passing_cmp = 0
@@ -86,6 +96,7 @@ class PositionStats(object):
         self.kicking_xpmissed = 0
 
     def get_stats(self):
+        '''returns all statistics as a dictionary'''
         data = dict()
 
         data["Passing Attempts"] = self.passing_att
@@ -120,6 +131,9 @@ class PositionStats(object):
 
 
 class QuarterbackStats(PositionStats):
+    '''
+    Member variables contain statistics specifically for a Quarterback
+    '''
     def __init__(self, name, position, **keyword_params):
         super(QuarterbackStats, self).__init__()
 
@@ -161,6 +175,9 @@ class QuarterbackStats(PositionStats):
 
 
 class RunningbackStats(PositionStats):
+    '''
+    Member variables contain statistics specifically for a Running Back
+    '''
     def __init__(self, name, position, **keyword_params):
         super(RunningbackStats, self).__init__()
 
@@ -197,6 +214,9 @@ class RunningbackStats(PositionStats):
 
 
 class WideReceiverTightEndStats(PositionStats):
+    '''
+    Member variables contain statistics specifically for a Wide Receiver or Tight End
+    '''
     def __init__(self, name, position, **keyword_params):
         super(WideReceiverTightEndStats, self).__init__()
 
@@ -229,6 +249,9 @@ class WideReceiverTightEndStats(PositionStats):
 
 
 class KickerStats(PositionStats):
+    '''
+    Member variables contain statistics specifically for a Kicker
+    '''
     def __init__(self, name, position, **keyword_params):
         super(KickerStats, self).__init__()
 
@@ -264,13 +287,15 @@ class KickerStats(PositionStats):
 
 
 class Player(object):
-    def __init__(self, name):
+    '''
+    Player object holds statistics and returns them in the proper format
+    '''
+    def __init__(self, name,scoring):
         self.name = name
 
         self.basic_info = BasicInfo(name)
 
         self.yearly_stats = dict()
-
         position = self.basic_info.position
 
         # following statements will populate all fields for a player
@@ -319,9 +344,10 @@ class Player(object):
                     self.yearly_stats[year][week] = \
                             QuarterbackStats(name, position, year=year, week=week).get_stats()
 
-        self.fantasy_stats = fantasy_scores(self.position_stats, 'Espn_Standard_Scoring')
+        self.fantasy_stats = fantasy_scores(self.position_stats, scoring)
 
     def get_player(self):
+        '''Returns dictionary containing each type of stats'''
         data = dict()
 
         data["BasicInfo"] = self.get_info()
@@ -332,30 +358,38 @@ class Player(object):
         return data
 
     def get_info(self):
-        data = list()
+        '''Returns list containing basic info'''
+        data = dict()
 
         data = self.basic_info.get_basic_info()
         return data
 
     def get_stats(self):
-        data = list()
+        '''Returns list containing carrer statistics'''
+        data = dict()
 
         data = self.position_stats.get_stats()
 
         return data
 
     def get_fantasy(self):
-        data = list()
+        '''Returns list containing fantasy weighted statistics'''
+        data = dict()
 
         data = self.fantasy_stats.get_stats()
         return data
 
     def get_yearly_stats(self):
+        '''Returns list containing yearly statistics'''
+        data = dict()
         data = self.yearly_stats
         return data
 
 
 class Espn_Standard_Scoring(Enum):
+    '''
+    Holds standard fantasy scoring used by ESPN
+    '''
     PASSING_YDS = 0.04
     PASSING_TDS = 4
     PASSING_INT = -2
@@ -371,10 +405,15 @@ class Espn_Standard_Scoring(Enum):
     # Kicking won't work until figure out distance of each kick
 
 class fantasy_scores(object):
+    '''
+        Holds and computes statistics weighted with fantasy scoring
+    '''
     def __init__(self, position_stats, scoring_system):
         # default scoring system is ESPN standard
-        scoring = Espn_Standard_Scoring
-
+        if scoring_system == None:
+            scoring = Espn_Standard_Scoring
+        else:
+            scoring = scoring_system
         self.passing_yds = position_stats.passing_yds * scoring.PASSING_YDS.value
         self.passing_tds = position_stats.passing_tds * scoring.PASSING_TDS.value
         self.passing_int = position_stats.passing_int * scoring.PASSING_INT.value
@@ -386,8 +425,9 @@ class fantasy_scores(object):
         self.receiving_tds = position_stats.receiving_tds * scoring.RECEIVING_TDS.value
 
         self.fumbles_lost = position_stats.fumbles_lost * scoring.FUMBLES_LOST.value
-    
+
     def get_stats(self):
+        '''returns dictionary of fantasy statistics'''
         data = dict()
 
         data["Passing Yards"] = self.passing_yds

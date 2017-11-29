@@ -1,8 +1,7 @@
 {% extends "stats/header.html" %}
 {% block content %}
 
-{% for k,v in players.items %}
-
+{% for k,v in Players.items %}
 <p>{{k}}
   {% for i,j in v.items%}
   <p>{{i}}

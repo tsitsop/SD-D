@@ -1,13 +1,17 @@
+'''
+    Contains view for Stats
+'''
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect
-from forms import PlayerForm
+from django.shortcuts import render
+
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.forms.formsets import formset_factory
 
 from stats.models import Player
+from stats.forms import PlayerForm
 
 def about_view(request):
     ''' This view simply renders the About page '''
@@ -67,19 +71,21 @@ class StatView(ListView):
             This function is called when a POST request is made when HomeView renders this page.
             It creates the player objects and renders the statistics page that displays the stats.
         '''
+
+
         player_names = request.session['players']
 
         players = list()
         for player in player_names:
-            players.append(Player(player))
+            players.append(Player(player, None))
 
         player_dict = {}
         for player in players:
             player_dict[player.name] = player.get_player()
-
         '''
-        player_dict format:
-            player_dict = {
+        data_dict format:
+
+            Players: {
                             "Player Name": {
                                             BasicInfo: {"info1": n
                                                         "info2": n}
@@ -92,11 +98,12 @@ class StatView(ListView):
                                                                   Summary: {"stat1": n
                                                                             "stat2": n}
                                                                   1: {"stat1": n
-                                                                      "stat2": n} }    <--- list of week numbers with stats 
+                                                                      "stat2": n} }    <--- list of week numbers with stats
                                                           year2: ...
                                                          }
                                             }
                             }
         '''
-
-        return render(request, self.template_name, player_dict)
+        data_dict = {}
+        data_dict['Players'] = player_dict
+        return render(request, self.template_name, data_dict)
