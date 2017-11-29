@@ -64,7 +64,7 @@ class StatView(ListView):
         process the names to get stats, and display the stats.
     '''
 
-    template_name = 'stats/test.html'
+    template_name = 'stats/statistics.html'
 
     def post(self, request):
         '''

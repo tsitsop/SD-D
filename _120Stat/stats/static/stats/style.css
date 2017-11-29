@@ -38,7 +38,7 @@ table tr td:nth-child(2) {
 	box-shadow: 10px;*/
 }
 #players {
-	position: fixed;
+	/*position: fixed;*/
     /* center the element */
     right: 0;
     left: 0;

@@ -1,21 +1,51 @@
 {% extends "stats/header.html" %} {% block content %}
 
 <div id="players">
-	{% for k,v in players.items %}
+	{% for k,v in Players.items %}
 	<div class="player">
 
 		<table>
 			<caption>
-				<b>{{k}}</b>
+				<b>{{k}}</b> <!-- Player Name -->
 			</caption>
 
-			{% for statistic in v %}
-			<tr>
-				{% for field in statistic %}
-				<td>{{field}}</td>
-				{% endfor %}
-			</tr>
 
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'BasicInfo' %}
+					<tr>
+						<td>{{statType}}</td>
+					</tr>
+					{% for statName, statInfo in statGroup.items %}
+					<tr>
+						<td>{{statName}}</td>
+						<td>{{statInfo}}</td>
+					</tr>
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'CareerStats' %}
+					<td>{{statType}}</td>
+						{% for statName, statInfo in statGroup.items %}
+							<td>{{statName}} {{statInfo}}</td>
+						{% endfor %}
+				{% endif %}
+			{% endfor %}
+
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'FantasyStats' %}
+					<td>{{statType}}</td>
+						{% for statName, statInfo in statGroup.items %}
+							<td>{{statName}} {{statInfo}}</td>
+						{% endfor %}
+				{% endif %}
+			{% endfor %}
+
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'YearlyStats' %}
+
+				{% endif %}
 			{% endfor %}
 		</table>
 	</div>
