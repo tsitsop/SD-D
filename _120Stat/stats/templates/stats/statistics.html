@@ -3,149 +3,159 @@
 <div id="players">
 	{% for playerName,v in Players.items %}
 
-	{% if forloop.counter == 0 %}
+	<script type="text/javascript">
+		console.log("banana1");
+	</script>
+	{% if forloop.counter == 1 %}
 		<script type="text/javascript">
-			console.log("banana");
+			console.log("banana5");
 		</script>
 	{% endif %}
 	<div class="player">
-	<div id="poop">
-		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-			{% if statType == 'BasicInfo' %}
-				{% for statName, statInfo in statGroup.items %}
-					{% if statName == 'Team' %}
-						<script type="text/javascript">
-							var dict = {
-							  "ARI": "#B0063A", "ATL": "#A6192E", "BAL": "#B0063A", "BUF": "#00338D", "CAR": "#0085CA", "CHI": "#051C2C", "CIN": "#FC4C02", "CLE": "#382F2D", "DAL": "#003594", "DEN": "#FC4C02", "DET": "#0069B1", "GB": "#175E33", "HOU": "#091F2C", "IND": "#001489", "JAX": "#006073", "KC": "#C8102E", "LAC": "#FFB81C", "LAR": "#002244", "MIA": "#008E97", "MIN": "#512D6D", "NE": "#0C2340", "NO": "#A28D5B", "NYG": "#001E62", "NYJ": "#0C371D", "OAK": "#A5ACAF", "PHI": "#064C53", "PIT": "#FFB81C", "SEA": "#4DFF00", "SF": "#9B2743", "TB": "#C8102E", "TEN": "#4B92DB", "WAS": "#862633"
-							};
-							cur
-						</script>
-					{% endif %}
-				{% endfor %}
-			{% endif %}
-		{% endfor %}
-		
-		<h5>
-			<b>{{playerName}}</b>
-		</h5>
+		<div id="player{{forloop.counter}}">
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'BasicInfo' %}
+					{% for statName, statInfo in statGroup.items %}
+						{% if statName == 'Team' %}
+							<script type="text/javascript">
+								var dict = {
+								  "ARI": "#B0063A", "ATL": "#A6192E", "BAL": "#B0063A", "BUF": "#00338D", "CAR": "#0085CA", "CHI": "#051C2C", "CIN": "#FC4C02", "CLE": "#382F2D", "DAL": "#003594", "DEN": "#FC4C02", "DET": "#0069B1", "GB": "#175E33", "HOU": "#091F2C", "IND": "#001489", "JAX": "#006073", "KC": "#C8102E", "LAC": "#FFB81C", "LAR": "#002244", "MIA": "#008E97", "MIN": "#512D6D", "NE": "#0C2340", "NO": "#A28D5B", "NYG": "#001E62", "NYJ": "#0C371D", "OAK": "#A5ACAF", "PHI": "#064C53", "PIT": "#FFB81C", "SEA": "#4DFF00", "SF": "#9B2743", "TB": "#C8102E", "TEN": "#4B92DB", "WAS": "#862633"
+								};
+							</script>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+			
+			<div class="playerName">
+				{{playerName}}
+			</div>
 
-		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-			{% if statType == 'BasicInfo' %}
-				<div class="basicInfoDiv">
-					<table>
-						<tr>
-							<td colspan="2"><h2>{{statType}}</h2></td>
-						</tr>
-						{% for statName, statInfo in statGroup.items %}
-							{% if forloop.counter|divisibleby:2 %}
-								<tr class="oddRow">
-							{% else %}
-								<tr class="evenRow">
-							{% endif %}
-							<td>{{statName}}</td>
-							<td>{{statInfo}}</td>
-						</tr>
-						{% endfor %}
-					</table>
-				</div>
-			{% endif %}
-		{% endfor %}
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'BasicInfo' %}
+					<div class="basicInfoDiv">
+						<table>
+							<tr>
+								<td colspan="2"><h2>{{statType}}</h2></td>
+							</tr>
+							{% for statName, statInfo in statGroup.items %}
+								{% if forloop.counter|divisibleby:2 %}
+									<tr class="oddRow">
+								{% else %}
+									<tr class="evenRow">
+								{% endif %}
+								<td>{{statName}}</td>
+								<td>{{statInfo}}</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
+				{% endif %}
+			{% endfor %}
 
-		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-			{% if statType == 'CareerStats' %}
-				<div class="careerInfoDiv">
-					<table>
-						<tr>
-							<td colspan="2"><h2>{{statType}}</h2></td>
-						</tr>
-						{% for statName, statInfo in statGroup.items %}
-							{% if forloop.counter|divisibleby:2 %}
-								<tr class="oddRow">
-							{% else %}
-								<tr class="evenRow">
-							{% endif %}
-							<td>{{statName}}</td>
-							<td>{{statInfo}}</td>
-						</tr>
-						{% endfor %}
-					</table>
-				</div>
-			{% endif %}
-		{% endfor %}
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'CareerStats' %}
+					<div class="careerInfoDiv">
+						<table>
+							<tr>
+								<td colspan="2"><h2>{{statType}}</h2></td>
+							</tr>
+							{% for statName, statInfo in statGroup.items %}
+								{% if forloop.counter|divisibleby:2 %}
+									<tr class="oddRow">
+								{% else %}
+									<tr class="evenRow">
+								{% endif %}
+								<td>{{statName}}</td>
+								<td>{{statInfo}}</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
+				{% endif %}
+			{% endfor %}
 
-		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-			{% if statType == 'YearlyStats' %}
-				<div class="yearlyInfoDiv">
-					<table>
-						<tr>
-							<td colspan="2"><h2>{{statType}}</h2></td>
-						</tr>
-						{% for year, yearInfo in statGroup.items %}
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'YearlyStats' %}
+					<div class="yearlyInfoDiv">
+						<table>
+							<tr>
+								<td colspan="2"><h2>{{statType}}</h2></td>
+							</tr>
+							{% for year, yearInfo in statGroup.items %}
 
-							{% if year == 2016 %}
-								<td colspan="2"><h3>{{year}}</h3></td>
-								{% for week, weekStats in yearInfo.items %}
-									{% if week == 'Summary' %}
-										{% for weekIndividualStatName, weekIndividualStat in weekStats.items %}
-											{% if forloop.counter|divisibleby:2 %}
-												<tr class="oddRow">
-											{% else %}
-												<tr class="evenRow">
-											{% endif %}
-											<td>{{weekIndividualStatName}}</td>
-											<td>{{weekIndividualStat}}</td>
-										{% endfor %}
-									{% endif %}
-								{% endfor %}
-							{% endif %}
+								{% if year == 2016 %}
+									<td colspan="2"><h3>{{year}}</h3></td>
+									{% for week, weekStats in yearInfo.items %}
+										{% if week == 'Summary' %}
+											{% for weekIndividualStatName, weekIndividualStat in weekStats.items %}
+												{% if forloop.counter|divisibleby:2 %}
+													<tr class="oddRow">
+												{% else %}
+													<tr class="evenRow">
+												{% endif %}
+												<td>{{weekIndividualStatName}}</td>
+												<td>{{weekIndividualStat}}</td>
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+								{% endif %}
 
-							{% if year == 2015 %}
-								<td colspan="2"><h3>{{year}}</h3></td>
-								{% for week, weekStats in yearInfo.items %}
-									{% if week == 'Summary' %}
-										{% for weekIndividualStatName, weekIndividualStat in weekStats.items %}
-											{% if forloop.counter|divisibleby:2 %}
-												<tr class="oddRow">
-											{% else %}
-												<tr class="evenRow">
-											{% endif %}
-											<td>{{weekIndividualStatName}}</td>
-											<td>{{weekIndividualStat}}</td>
-										{% endfor %}
-									{% endif %}
-								{% endfor %}
-							{% endif %}
-						</tr>
-						{% endfor %}
-					</table>
-				</div>
-			{% endif %}
-		{% endfor %}
+								{% if year == 2015 %}
+									<td colspan="2"><h3>{{year}}</h3></td>
+									{% for week, weekStats in yearInfo.items %}
+										{% if week == 'Summary' %}
+											{% for weekIndividualStatName, weekIndividualStat in weekStats.items %}
+												{% if forloop.counter|divisibleby:2 %}
+													<tr class="oddRow">
+												{% else %}
+													<tr class="evenRow">
+												{% endif %}
+												<td>{{weekIndividualStatName}}</td>
+												<td>{{weekIndividualStat}}</td>
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
+				{% endif %}
+			{% endfor %}
 
-		{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
-			{% if statType == 'FantasyStats' %}
-				<div class="fantasyInfoDiv">
-					<table>
-						<tr>
-							<td colspan="2"><h2>{{statType}}</h2></td>
-						</tr>
-						{% for statName, statInfo in statGroup.items %}
-							{% if forloop.counter|divisibleby:2 %}
-								<tr class="oddRow">
-							{% else %}
-								<tr class="evenRow">
-							{% endif %}
-							<td>{{statName}}</td>
-							<td>{{statInfo}}</td>
-						</tr>
-						{% endfor %}
-					</table>
-				</div>
-			{% endif %}
-		{% endfor %}
-	</div>
+			{% for statType,statGroup in v.items%} <!-- statType is "basicinfo", statGroup is all info -->
+				{% if statType == 'FantasyStats' %}
+					<div class="fantasyInfoDiv">
+						<table>
+							<tr>
+								<td colspan="2"><h2>{{statType}}</h2></td>
+							</tr>
+							{% for statName, statInfo in statGroup.items %}
+								{% if forloop.counter|divisibleby:2 %}
+									<tr class="oddRow">
+								{% else %}
+									<tr class="evenRow">
+								{% endif %}
+								<td>{{statName}}</td>
+								<td>{{statInfo}}</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
 	</div>
 	{% endfor %}
+	<script type="text/javascript">
+		var playerNames = document.getElementsByClassName("playerName");
+		for(var i = 0; i < playerNames.length; i++) {
+			var name = playerNames[i].innerHTML;
+			console.log(name);
+			playerNames[i].innerHTML = name.replace(" ", "<br>");
+		}
+	</script>
 </div>
 
 {% endblock %}
