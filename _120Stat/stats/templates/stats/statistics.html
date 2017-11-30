@@ -17,11 +17,6 @@
 				{% if statType == 'BasicInfo' %}
 					{% for statName, statInfo in statGroup.items %}
 						{% if statName == 'Team' %}
-							<script type="text/javascript">
-								var dict = {
-								  "ARI": "#B0063A", "ATL": "#A6192E", "BAL": "#B0063A", "BUF": "#00338D", "CAR": "#0085CA", "CHI": "#051C2C", "CIN": "#FC4C02", "CLE": "#382F2D", "DAL": "#003594", "DEN": "#FC4C02", "DET": "#0069B1", "GB": "#175E33", "HOU": "#091F2C", "IND": "#001489", "JAX": "#006073", "KC": "#C8102E", "LAC": "#FFB81C", "LAR": "#002244", "MIA": "#008E97", "MIN": "#512D6D", "NE": "#0C2340", "NO": "#A28D5B", "NYG": "#001E62", "NYJ": "#0C371D", "OAK": "#A5ACAF", "PHI": "#064C53", "PIT": "#FFB81C", "SEA": "#4DFF00", "SF": "#9B2743", "TB": "#C8102E", "TEN": "#4B92DB", "WAS": "#862633"
-								};
-							</script>
 						{% endif %}
 					{% endfor %}
 				{% endif %}
@@ -45,7 +40,12 @@
 									<tr class="evenRow">
 								{% endif %}
 								<td>{{statName}}</td>
-								<td>{{statInfo}}</td>
+								{% if statName == 'Team' %}
+									<td class="teamName">{{statInfo}}</td>
+								{% else %}
+									<td>{{statInfo}}</td>
+								{% endif %}
+								
 							</tr>
 							{% endfor %}
 						</table>
@@ -152,9 +152,34 @@
 		var playerNames = document.getElementsByClassName("playerName");
 		for(var i = 0; i < playerNames.length; i++) {
 			var name = playerNames[i].innerHTML;
-			console.log(name);
 			playerNames[i].innerHTML = name.replace(" ", "<br>");
 		}
+
+		var dict = {
+		  "ARI": "#B0063A", "ATL": "#A6192E", "BAL": "#241773", "BUF": "#00338D", "CAR": "#0085CA", "CHI": "#051C2C", "CIN": "#FC4C02", "CLE": "#382F2D", "DAL": "#003594", "DEN": "#FC4C02", "DET": "#0069B1", "GB": "#175E33", "HOU": "#091F2C", "IND": "#001489", "JAX": "#006073", "KC": "#C8102E", "LAC": "#FFB81C", "LAR": "#002244", "MIA": "#008E97", "MIN": "#512D6D", "NE": "#0C2340", "NO": "#A28D5B", "NYG": "#001E62", "NYJ": "#0C371D", "OAK": "#A5ACAF", "PHI": "#064C53", "PIT": "#FFB81C", "SEA": "#4DFF00", "SF": "#9B2743", "TB": "#C8102E", "TEN": "#4B92DB", "WAS": "#862633"
+		};
+
+		var teamNames = document.getElementsByClassName("teamName");
+
+		for(var i = 0; i < teamNames.length; i++) {
+			var teamHexColor = dict[teamNames[i].innerHTML];
+			var j = i+1;
+			var playerDivId = "player" + j.toString();
+			console.log(playerDivId);
+			var playerDiv = document.getElementById(playerDivId);
+			playerDiv.style.backgroundColor = teamHexColor;
+			var test = playerDiv.style.backgroundColor;
+			console.log(test);
+			var test2 = test.replace("b", "ba");
+			playerDiv.style.backgroundColor = test2.replace(")", ", .4)");
+		}
+
+		for(var i = 0; i < teamNames.length; i++) {
+
+		}
+
+
+
 	</script>
 </div>
 
