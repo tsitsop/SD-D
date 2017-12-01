@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 #from django.db import models
 import nfldb
 import nfldb.types as types
+import collections
 from enum import Enum
 
 
@@ -40,7 +41,7 @@ class BasicInfo(object):
 
     def get_basic_info(self):
         '''returns the data we got as a dictionary'''
-        data = dict()
+        data = collections.OrderedDict()
 
         data["Position"] = self.position
         data["Uniform Number"] = self.uniform_number
@@ -97,7 +98,7 @@ class PositionStats(object):
 
     def get_stats(self):
         '''returns all statistics as a dictionary'''
-        data = dict()
+        data = collections.OrderedDict()
 
         data["Passing Attempts"] = self.passing_att
         data["Passing Completions"] = self.passing_cmp
@@ -290,65 +291,65 @@ class Player(object):
     '''
     Player object holds statistics and returns them in the proper format
     '''
-    def __init__(self, name,scoring):
+    def __init__(self, name, scoring):
         self.name = name
 
         self.basic_info = BasicInfo(name)
 
-        self.yearly_stats = dict()
+        self.yearly_stats = collections.OrderedDict()
         position = self.basic_info.position
 
         # following statements will populate all fields for a player
         if position == types.Enums.player_pos.QB:
             self.position_stats = QuarterbackStats(name, position)
             for year in range(2017, 2008, -1):
-                self.yearly_stats[year] = dict()
+                self.yearly_stats[year] = collections.OrderedDict()
                 self.yearly_stats[year]['Summary'] = \
                         QuarterbackStats(name, position, year=year).get_stats()
 
-                for week in range(1, 18):
-                    self.yearly_stats[year][week] = \
-                            QuarterbackStats(name, position, year=year, week=week).get_stats()
+                # for week in range(1, 18):
+                #     self.yearly_stats[year][week] = \
+                #             QuarterbackStats(name, position, year=year, week=week).get_stats()
 
         elif position == types.Enums.player_pos.RB:
             self.position_stats = RunningbackStats(name, position)
             for year in range(2017, 2008, -1):
-                self.yearly_stats[year] = dict()
+                self.yearly_stats[year] = collections.OrderedDict()
                 self.yearly_stats[year]['Summary'] = \
                         RunningbackStats(name, position, year=year).get_stats()
 
-                for week in range(1, 18):
-                    self.yearly_stats[year][week] = \
-                            RunningbackStats(name, position, year=year, week=week).get_stats()
+                # for week in range(1, 18):
+                #     self.yearly_stats[year][week] = \
+                #             RunningbackStats(name, position, year=year, week=week).get_stats()
 
         elif position == types.Enums.player_pos.WR or position == types.Enums.player_pos.WR:
             self.position_stats = WideReceiverTightEndStats(name, position)
             for year in range(2017, 2008, -1):
-                self.yearly_stats[year] = dict()
+                self.yearly_stats[year] = collections.OrderedDict()
                 self.yearly_stats[year]['Summary'] = \
                         WideReceiverTightEndStats(name, position, year=year).get_stats()
 
-                for week in range(1, 18):
-                    self.yearly_stats[year][week] = \
-                            WideReceiverTightEndStats(name, position, year=year, week=week)\
-                            .get_stats()
+                # for week in range(1, 18):
+                #     self.yearly_stats[year][week] = \
+                #             WideReceiverTightEndStats(name, position, year=year, week=week)\
+                #             .get_stats()
 
         elif position == types.Enums.player_pos.K:
             self.position_stats = KickerStats(name, position)
             for year in range(2017, 2008, -1):
-                self.yearly_stats[year] = dict()
+                self.yearly_stats[year] = collections.OrderedDict()
                 self.yearly_stats[year]['Summary'] = KickerStats(name, position, year=year)\
                     .get_stats()
 
-                for week in range(1, 18):
-                    self.yearly_stats[year][week] = \
-                            QuarterbackStats(name, position, year=year, week=week).get_stats()
+                # for week in range(1, 18):
+                #     self.yearly_stats[year][week] = \
+                #             QuarterbackStats(name, position, year=year, week=week).get_stats()
 
         self.fantasy_stats = fantasy_scores(self.position_stats, scoring)
 
     def get_player(self):
         '''Returns dictionary containing each type of stats'''
-        data = dict()
+        data = collections.OrderedDict()
 
         data["BasicInfo"] = self.get_info()
         data["CareerStats"] = self.get_stats()
@@ -359,14 +360,14 @@ class Player(object):
 
     def get_info(self):
         '''Returns list containing basic info'''
-        data = dict()
+        data = collections.OrderedDict()
 
         data = self.basic_info.get_basic_info()
         return data
 
     def get_stats(self):
         '''Returns list containing carrer statistics'''
-        data = dict()
+        data = collections.OrderedDict()
 
         data = self.position_stats.get_stats()
 
@@ -374,14 +375,14 @@ class Player(object):
 
     def get_fantasy(self):
         '''Returns list containing fantasy weighted statistics'''
-        data = dict()
+        data = collections.OrderedDict()
 
         data = self.fantasy_stats.get_stats()
         return data
 
     def get_yearly_stats(self):
         '''Returns list containing yearly statistics'''
-        data = dict()
+        data = collections.OrderedDict()
         data = self.yearly_stats
         return data
 
@@ -428,7 +429,7 @@ class fantasy_scores(object):
 
     def get_stats(self):
         '''returns dictionary of fantasy statistics'''
-        data = dict()
+        data = collections.OrderedDict()
 
         data["Passing Yards"] = self.passing_yds
         data["Passing Touchdowns"] = self.passing_tds
