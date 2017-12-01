@@ -164,6 +164,7 @@ table tr td:nth-child(2) {
 	margin-left: -12px;
 	margin-top: -12px;
 	margin-bottom: -12px;
+	border-radius: 20px;
 }
 
 #player2 {
@@ -174,6 +175,7 @@ table tr td:nth-child(2) {
 	margin-left: -12px;
 	margin-top: -12px;
 	margin-bottom: -12px;
+	border-radius: 20px;
 }
 
 #player3 {
@@ -184,6 +186,7 @@ table tr td:nth-child(2) {
 	margin-left: -12px;
 	margin-top: -12px;
 	margin-bottom: -12px;
+	border-radius: 20px;
 }
 
 #player4 {
@@ -194,4 +197,5 @@ table tr td:nth-child(2) {
 	margin-left: -12px;
 	margin-top: -12px;
 	margin-bottom: -12px;
+	border-radius: 20px;
 }
