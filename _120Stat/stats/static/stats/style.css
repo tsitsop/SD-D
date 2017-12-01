@@ -1,57 +1,66 @@
 body {
 	font-family: "Arial", sans-serif;
 	background-color: #393939;
-	/*color: azure;*/
 }
+
 h1 {
 	font-size: 56px;
 	color: white;
 	margin: 20px;
 }
+
 h2 {
 	font-size: 26px;
 	padding: 0;
 	margin: 3px;
 }
+
 h3 {
 	font-size: 18px;
 	padding: 0;
 	margin: 2px;
 }
+
 h4 {
 	font-size: 28px;
 	padding: 0;
 	margin: 2px;
 	color: azure;
 }
-h5 {
-}
+
 p {
 	color: white;
 }
+
 a:visited {
 	color: azure;
 }
+
 label {
 	color: azure;
 }
+
 table {
 	width: 100%;
 	margin: 0 auto;
 }
+
 caption {
 	font-size: 24px;
 	padding: 0;
 	margin: 2px;
 }
+
 tr {
 	border: 1px solid black;
 }
+
 td {
 	padding: 4px;
 	border-radius: 20px;
 	opacity: 1;
 }
+
 table tr td:nth-child(2) {
 	text-align: right;
 }
@@ -59,19 +68,25 @@ table tr td:nth-child(2) {
 
 /* Classes */
 .navPage {
+	/* Individual link in #navBar */
 	padding: 10px;
 	margin-left: 2px;
 	margin-right: 2px;
 	display: inline;
 	position: relative;
 }
+
 .navPage:hover {
 	background: #2A2A2A;
 }
+
 .field {
+	/* Home page form field */
 	margin: 12px;
 }
+
 .player {
+	/* Individual player div in #players */
 	width: 20.75%; 
 	height: 25%;
 	margin: 12px;
@@ -80,9 +95,8 @@ table tr td:nth-child(2) {
 	background-color: #777777; 
 	float: left;
 	border-radius: 20px;
-/*	text-shadow: 10px;
-	box-shadow: 10px;*/
 }
+
 .playerName {
 	border-bottom: 2px solid black;
 	padding-top: 4px;
@@ -92,25 +106,36 @@ table tr td:nth-child(2) {
 	margin: 2px;
 	text-align: center;
 }
+
 .basicInfoDiv {
+	/* Helps with stat alignment */
 	min-height: 320px;
 }
+
 .careerInfoDiv {
+	/* Helps with stat alignment */
 	min-height: 650px;
 }
+
 .fantasyInfoDiv {
+	/* Helps with stat alignment */
 	min-height: 280px;
 }
+
 .oddRow {
 	
 }
+
 .evenRow {
+	/* Makes table rows alternate colors */
 	background-color: rgba(0, 0, 0, .1);
 	border-radius: 20px;
 }
 
+
 /* IDs */
 #navBar {
+	/* Navigation bar */
 	text-align:center;
 	color: azure;
 	margin-bottom: 10px;
@@ -119,52 +144,54 @@ table tr td:nth-child(2) {
 	padding: 10px;
 	background-color: #333333;
 }
+
 #playerForm {
+	/* Form on home page where player names are entered */
 	text-align: center;
 }
+
 #players {
-	/*position: fixed;*/
-    /* center the element */
-    margin: 0 auto;
+	/* div that contains each player div */
+  margin: 0 auto;
 	overflow: auto;
 }
+
 #player1 {
+	/* Player 1 semi-transparent team color div */
 	width: 100%;
 	height: 100%;
 	padding: 12px;
 	margin-left: -12px;
 	margin-top: -12px;
 	margin-bottom: -12px;
-	background-color: rgba(100, 0, 200, .20);
-	border-radius: 20px;
 }
+
 #player2 {
+	/* Player 2 semi-transparent team color div */
 	width: 100%;
 	height: 100%;
 	padding: 12px;
 	margin-left: -12px;
 	margin-top: -12px;
 	margin-bottom: -12px;
-	background-color: rgba(100, 0, 0, .20);
-	border-radius: 20px;
 }
+
 #player3 {
+	/* Player 3 semi-transparent team color div */
 	width: 100%;
 	height: 100%;
 	padding: 12px;
 	margin-left: -12px;
 	margin-top: -12px;
 	margin-bottom: -12px;
-	background-color: rgba(100, 0, 50, .20);
-	border-radius: 20px;
 }
+
 #player4 {
+	/* Player 4 semi-transparent team color div */
 	width: 100%;
 	height: 100%;
 	padding: 12px;
 	margin-left: -12px;
 	margin-top: -12px;
 	margin-bottom: -12px;
-	background-color: rgba(0, 100, 200, .20);
-	border-radius: 20px;
 }

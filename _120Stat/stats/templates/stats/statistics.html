@@ -13,6 +13,7 @@
 			<!-- statType is "BasicInfo", statGroup is all info -->
 				{% if statType == 'BasicInfo' %}
 					<div class="basicInfoDiv">
+						<!-- table for Basic Info -->
 						<table>
 							<tr>
 								<td colspan="2">
@@ -43,6 +44,7 @@
 			<!-- statType is "BasicInfo", statGroup is all info -->
 				{% if statType == 'CareerStats' %}
 					<div class="careerInfoDiv">
+						<!-- table for Career Stats -->
 						<table>
 							<tr>
 								<td colspan="2"><h2>{{statType}}</h2></td>
@@ -66,6 +68,7 @@
 			<!-- statType is "BasicInfo", statGroup is all info -->
 				{% if statType == 'YearlyStats' %}
 					<div class="yearlyInfoDiv">
+						<!-- table for Yearly Stats -->
 						<table>
 							<tr>
 								<td colspan="2"><h2>{{statType}}</h2></td>
@@ -116,6 +119,7 @@
 			<!-- statType is "BasicInfo", statGroup is all info -->
 				{% if statType == 'FantasyStats' %}
 					<div class="fantasyInfoDiv">
+						<!-- table for Fantasy Stats -->
 						<table>
 							<tr>
 								<td colspan="2">
@@ -171,6 +175,7 @@
 			playerDiv.style.backgroundColor = temp2.replace(")", ", .4)");
 		}
 	</script>
+	
 </div>
 
 {% endblock %}
