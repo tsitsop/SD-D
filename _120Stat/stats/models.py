@@ -26,18 +26,29 @@ class BasicInfo(object):
 
         # this currently gets the first player returned
         #  so we may need to change in future
-        info = q.as_players()[0]
-
-        # store basic info
-        self.position = info.position
-        self.uniform_number = info.uniform_number
-        self.birthdate = info.birthdate
-        self.height = info.height
-        self.weight = info.weight
-        self.college = info.college
-        self.status = info.status
-        self.team = info.team
-        self.years_pro = info.years_pro
+        info = q.as_players()
+        if len(info) > 0:
+            info = info[0]
+            # store basic info
+            self.position = info.position
+            self.uniform_number = info.uniform_number
+            self.birthdate = info.birthdate
+            self.height = info.height
+            self.weight = info.weight
+            self.college = info.college
+            self.status = info.status
+            self.team = info.team
+            self.years_pro = info.years_pro
+        else:
+            self.position = types.Enums.player_pos.QB
+            self.uniform_number = 1
+            self.birthdate = "00/00/0000"
+            self.height = 0
+            self.weight = 0
+            self.college = "RPI"
+            self.status = "Nonexistent"
+            self.team = "Free"
+            self.years_pro = 0
 
     def get_basic_info(self):
         '''returns the data we got as a dictionary'''
