@@ -48,7 +48,10 @@ class HomeView(TemplateView):
                 # or false otherwise
                 player_name = form.cleaned_data.get('player_name', False)
                 if player_name != False:
-                    players.append(player_name)
+                    # can use nfldb.player_search(db, player_name) to determine player name
+                    #  - protects against slight misspellings
+                    # see https://github.com/BurntSushi/nfldb/wiki/Fuzzy-player-name-matching
+                    players.append(player_name.title())
 
             request.session['players'] = players
 

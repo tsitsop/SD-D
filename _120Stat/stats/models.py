@@ -146,7 +146,7 @@ class QuarterbackStats(PositionStats):
     '''
     Member variables contain statistics specifically for a Quarterback
     '''
-    def __init__(self, name, position, **keyword_params):
+    def __init__(self, name, **keyword_params):
         super(QuarterbackStats, self).__init__()
 
         db = nfldb.connect()
@@ -161,7 +161,7 @@ class QuarterbackStats(PositionStats):
         else:
             q.game(season_type='Regular')
 
-        q.player(full_name=name, position=position)
+        q.player(full_name=name, position='QB')
 
 
         stats = q.as_aggregate()
@@ -190,7 +190,7 @@ class RunningbackStats(PositionStats):
     '''
     Member variables contain statistics specifically for a Running Back
     '''
-    def __init__(self, name, position, **keyword_params):
+    def __init__(self, name, **keyword_params):
         super(RunningbackStats, self).__init__()
 
         db = nfldb.connect()
@@ -204,7 +204,7 @@ class RunningbackStats(PositionStats):
         else:
             q.game(season_type='Regular')
 
-        q.player(full_name=name, position=position)
+        q.player(full_name=name, position='RB')
 
         stats = q.as_aggregate()
 
@@ -229,7 +229,7 @@ class WideReceiverTightEndStats(PositionStats):
     '''
     Member variables contain statistics specifically for a Wide Receiver or Tight End
     '''
-    def __init__(self, name, position, **keyword_params):
+    def __init__(self, name, **keyword_params):
         super(WideReceiverTightEndStats, self).__init__()
 
         db = nfldb.connect()
@@ -243,7 +243,7 @@ class WideReceiverTightEndStats(PositionStats):
         else:
             q.game(season_type='Regular')
 
-        q.player(full_name=name, position=position)
+        q.player(full_name=name, position=keyword_params['position'])
 
         stats = q.as_aggregate()
 
@@ -264,7 +264,7 @@ class KickerStats(PositionStats):
     '''
     Member variables contain statistics specifically for a Kicker
     '''
-    def __init__(self, name, position, **keyword_params):
+    def __init__(self, name, **keyword_params):
         super(KickerStats, self).__init__()
 
         db = nfldb.connect()
@@ -278,7 +278,7 @@ class KickerStats(PositionStats):
         else:
             q.game(season_type='Regular')
 
-        q.player(full_name=name, position=position)
+        q.player(full_name=name, position='K')
 
         stats = q.as_aggregate()
 
@@ -289,7 +289,7 @@ class KickerStats(PositionStats):
             self.kicking_fgm = stats.kicking_fgm
             self.kicking_fgmissed = stats.kicking_fgmissed
 
-        # maybe -- depends how this works. need to see if per kick or total kicks
+            # maybe -- depends how this works. need to see if per kick or total kicks
             self.kicking_fgm_yds = stats.kicking_fgm_yds
             self.kicking_fgmissed_yds = stats.kicking_fgmissed_yds
 
@@ -310,48 +310,60 @@ class Player(object):
         self.yearly_stats = collections.OrderedDict()
         position = self.basic_info.position
 
+        # if position is UNK, what to do??
+
+
+
         # following statements will populate all fields for a player
         if position == types.Enums.player_pos.QB:
-            self.position_stats = QuarterbackStats(name, position)
+            self.position_stats = QuarterbackStats(name)
             for year in range(2017, 2008, -1):
                 self.yearly_stats[year] = collections.OrderedDict()
                 self.yearly_stats[year]['Summary'] = \
-                        QuarterbackStats(name, position, year=year).get_stats()
+                        QuarterbackStats(name, year=year).get_stats()
 
+                # this gets weekly game log stats - commented out to improve speed
+                #  - refactoring needed to improve query time
                 # for week in range(1, 18):
                 #     self.yearly_stats[year][week] = \
                 #             QuarterbackStats(name, position, year=year, week=week).get_stats()
 
         elif position == types.Enums.player_pos.RB:
-            self.position_stats = RunningbackStats(name, position)
+            self.position_stats = RunningbackStats(name)
             for year in range(2017, 2008, -1):
                 self.yearly_stats[year] = collections.OrderedDict()
                 self.yearly_stats[year]['Summary'] = \
-                        RunningbackStats(name, position, year=year).get_stats()
+                        RunningbackStats(name, year=year).get_stats()
 
+                # this gets weekly game log stats - commented out to improve speed
+                #  - refactoring needed to improve query time
                 # for week in range(1, 18):
                 #     self.yearly_stats[year][week] = \
                 #             RunningbackStats(name, position, year=year, week=week).get_stats()
 
         elif position == types.Enums.player_pos.WR or position == types.Enums.player_pos.WR:
-            self.position_stats = WideReceiverTightEndStats(name, position)
+            self.position_stats = WideReceiverTightEndStats(name, position=position)
             for year in range(2017, 2008, -1):
                 self.yearly_stats[year] = collections.OrderedDict()
                 self.yearly_stats[year]['Summary'] = \
-                        WideReceiverTightEndStats(name, position, year=year).get_stats()
+                        WideReceiverTightEndStats(name, position=position, year=year).get_stats()
 
+                # this gets weekly game log stats - commented out to improve speed
+                #  - refactoring needed to improve query time
                 # for week in range(1, 18):
                 #     self.yearly_stats[year][week] = \
                 #             WideReceiverTightEndStats(name, position, year=year, week=week)\
                 #             .get_stats()
 
         elif position == types.Enums.player_pos.K:
-            self.position_stats = KickerStats(name, position)
+            self.position_stats = KickerStats(name)
             for year in range(2017, 2008, -1):
                 self.yearly_stats[year] = collections.OrderedDict()
-                self.yearly_stats[year]['Summary'] = KickerStats(name, position, year=year)\
+                self.yearly_stats[year]['Summary'] = KickerStats(name, year=year)\
                     .get_stats()
 
+                # this gets weekly game log stats - commented out to improve speed
+                #  - refactoring needed to improve query time
                 # for week in range(1, 18):
                 #     self.yearly_stats[year][week] = \
                 #             QuarterbackStats(name, position, year=year, week=week).get_stats()
