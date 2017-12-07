@@ -4,7 +4,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView
@@ -12,6 +12,10 @@ from django.forms.formsets import formset_factory
 
 from stats.models import Player
 from stats.forms import PlayerForm
+from enum import Enum
+import nfldb.types as types
+import nfldb
+import re
 
 def about_view(request):
     ''' This view simply renders the About page '''
@@ -30,9 +34,30 @@ class HomeView(TemplateView):
     template_name = "stats/home.html"
     PlayerFormSet = formset_factory(PlayerForm, extra=4)
 
+    def get_best_name(self,n):
+        db = nfldb.connect()
+
+        toMatch = n.encode('ascii','ignore').lower()
+
+        top = nfldb.player_search(db,n, limit=10)
+        matches = list()
+
+        for player,dist in top:
+            if player.position is not types.Enums.player_pos.UNK:
+                if player.first_name.lower() in toMatch and player.last_name.lower() in toMatch:
+                    matches.append(player.full_name)
+
+        if len(matches)>0:
+            return matches[0]
+
+        return "PLAYER_NOT_FOUND"
+
     def get(self, request):
         ''' Render home.html, passing in our form, when a user visits home page '''
-        return render(request, self.template_name, {'formset': self.PlayerFormSet})
+        if request.session.get('error') != None:
+            return render(request, self.template_name, {'formset': self.PlayerFormSet,'error':request.session['error']})
+        else:
+            return render(request, self.template_name, {'formset': self.PlayerFormSet})
 
     def post(self, request):
         '''
@@ -41,7 +66,6 @@ class HomeView(TemplateView):
         '''
         formset = self.PlayerFormSet(request.POST)
         players = list()
-
         if formset.is_valid():
             for form in formset:
                 # will hold player name if a name was in the form
@@ -51,7 +75,17 @@ class HomeView(TemplateView):
                     # can use nfldb.player_search(db, player_name) to determine player name
                     #  - protects against slight misspellings
                     # see https://github.com/BurntSushi/nfldb/wiki/Fuzzy-player-name-matching
-                    players.append(player_name.title())
+                    final_name = self.get_best_name(player_name.title())
+
+                    if final_name == "PLAYER_NOT_FOUND":
+                        request.session['error'] = True
+                        return redirect('/',name='get')
+                    else:
+                        if request.session.get('error') != None:
+                            del request.session['error']
+                            request.session.modified = True
+                    #print final_name
+                    players.append(final_name)
 
             request.session['players'] = players
 

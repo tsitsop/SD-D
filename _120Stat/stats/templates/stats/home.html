@@ -17,5 +17,10 @@
 				// Because FUCK the corporate world
 			</script>
     </div>
+		<div>
+						{% if error is not none %}
+							ERROR: Invalid Name
+						{% endif %}
+		</div>
   </form>
 {% endblock %}
